@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:scrollbars="none"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fadingEdge="none"
+    android:fadingEdgeLength="0dp"
+    android:overScrollMode="never"
+    android:smoothScrollbar="false">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:background="@drawable/back_destacado"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="342dp">
+
+            <TextView
+                android:id="@+id/highligth_title_label"
+                android:textColor="#5E5E5E"
+                android:textSize="22sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="24dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginBottom="5dp"
+                android:text="@string/vod_highlight_title"/>
+
+            <TextView
+                android:id="@+id/highligth_title_label_2"
+                android:textColor="#5E5E5E"
+                android:textSize="18sp"
+                android:visibility="gone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginRight="9dp"
+                android:layout_toLeftOf="@+id/refresh_destacado"
+                android:layout_marginBottom="5dp"
+                android:text="@string/vod_highlight_refresh"/>
+
+            <ImageView
+                android:id="@+id/refresh_destacado"
+                android:layout_marginTop="12dp"
+                android:layout_alignParentRight="true"
+                android:background="@drawable/refresh2"
+                android:layout_marginRight="10dp"
+                android:layout_width="36dp"
+                android:layout_height="36dp" />
+
+            <HorizontalScrollView
+                android:scrollbars="none"
+                android:layout_below="@+id/highligth_title_label"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="20dp"
+                android:fadingEdge="none"
+                android:fadingEdgeLength="0dp"
+                android:overScrollMode="never"
+                android:smoothScrollbar="false">
+
+                <LinearLayout
+                    android:id="@+id/highlights_container"
+                    android:padding="20dp"
+                    android:orientation="horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent">
+
+                </LinearLayout>
+
+            </HorizontalScrollView>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:background="@drawable/back_programados"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="320dp">
+
+            <TextView
+                android:id="@+id/last_programs_title_label"
+                android:textColor="#5E5E5E"
+                android:textSize="22sp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="24dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginBottom="5dp"
+                android:text="@string/vod_last_programs_title"/>
+
+            <TextView
+                android:id="@+id/last_programs_title_label_2"
+                android:textColor="#5E5E5E"
+                android:textSize="18sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginRight="9dp"
+                android:visibility="gone"
+                android:layout_toLeftOf="@+id/refresh_last_program"
+                android:layout_marginBottom="5dp"
+                android:text="@string/vod_highlight_refresh"/>
+
+            <ImageView
+                android:id="@+id/refresh_last_program"
+                android:layout_marginTop="12dp"
+                android:layout_alignParentRight="true"
+                android:background="@drawable/refresh2"
+                android:layout_marginRight="10dp"
+                android:layout_width="36dp"
+                android:layout_height="36dp" />
+
+            <HorizontalScrollView
+                android:scrollbars="none"
+                android:layout_below="@+id/last_programs_title_label"
+                android:layout_marginBottom="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:fadingEdge="none"
+                android:fadingEdgeLength="0dp"
+                android:overScrollMode="never"
+                android:smoothScrollbar="false">
+
+                <LinearLayout
+                    android:id="@+id/last_programs_container"
+                    android:padding="20dp"
+                    android:orientation="horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent">
+
+                </LinearLayout>
+
+            </HorizontalScrollView>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:background="@drawable/back_programados"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="340dp">
+
+            <TextView
+                android:id="@+id/last_matches_title_label"
+                android:textColor="#5E5E5E"
+                android:textSize="22sp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="24dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginBottom="5dp"
+                android:text="@string/vod_last_matches_title"/>
+
+            <TextView
+                android:id="@+id/last_matches_title_label_2"
+                android:textColor="#5E5E5E"
+                android:textSize="18sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginRight="9dp"
+                android:layout_toLeftOf="@+id/refresh_last_matches"
+                android:layout_marginBottom="5dp"
+                android:visibility="gone"
+                android:text="@string/vod_highlight_refresh"/>
+
+            <ImageView
+                android:id="@+id/refresh_last_matches"
+                android:layout_marginTop="12dp"
+                android:layout_alignParentRight="true"
+                android:background="@drawable/refresh2"
+                android:layout_marginRight="10dp"
+                android:layout_width="36dp"
+                android:layout_height="36dp" />
+
+            <HorizontalScrollView
+                android:scrollbars="none"
+                android:layout_below="@+id/last_matches_title_label"
+                android:layout_marginBottom="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:fadingEdge="none"
+                android:fadingEdgeLength="0dp"
+                android:overScrollMode="never"
+                android:smoothScrollbar="false">
+
+                <LinearLayout
+                    android:id="@+id/last_matches_container"
+                    android:padding="20dp"
+                    android:orientation="horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent">
+
+                </LinearLayout>
+
+            </HorizontalScrollView>
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+</ScrollView>

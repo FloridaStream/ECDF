@@ -1,0 +1,304 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="@drawable/back_menu"
+    android:clipChildren="false"
+    android:layout_width="290dp"
+    android:layout_height="match_parent">
+
+    <ScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:scrollbars="none"
+        android:fadingEdge="none"
+        android:fadingEdgeLength="0dp"
+        android:overScrollMode="never"
+        android:smoothScrollbar="false">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:id="@+id/level3_filter_container"
+                    android:layout_marginLeft="0dp"
+                    android:background="@drawable/back_menu_2nivel"
+                    android:orientation="vertical"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginTop="-1dp"
+                    android:layout_width="160dp"
+                    android:layout_height="match_parent">
+
+                    <ListView
+                        android:id="@+id/level3_filter_listview"
+                        android:divider="@android:color/transparent"
+                        android:scrollbars="none"
+                        android:layout_width="130dp"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="top|bottom"
+                        android:fadingEdge="none"
+                        android:fadingEdgeLength="0dp"
+                        android:overScrollMode="never"
+                        android:smoothScrollbar="false">
+
+                    </ListView>
+
+                </LinearLayout>
+
+                <RelativeLayout
+                    android:id="@+id/container_filter_dd"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <!--ImageView
+                        android:id="@+id/imageView"
+                        android:background="@android:color/transparent"
+                        android:src="@drawable/back_menu"
+                        android:scaleType="fitXY"
+                        android:layout_width="320dp"
+                        android:layout_height="match_parent"
+                        android:layout_below="@+id/imageView2" /-->
+
+                    <com.idunnololz.widgets.AnimatedExpandableListView
+                        android:id="@+id/filters_expandable_listview"
+                        android:background="@android:color/transparent"
+                        android:scrollbars="none"
+                        android:divider="@drawable/arrow"
+                        android:childDivider="@drawable/arrow"
+                        android:groupIndicator="@android:color/transparent"
+                        android:layout_below="@+id/filters_label"
+                        android:layout_width="@dimen/slidemenu_content_width"
+                        android:layout_height="wrap_content"
+                        android:fadingEdge="none"
+                        android:fadingEdgeLength="0dp"
+                        android:overScrollMode="never"
+                        android:smoothScrollbar="false">
+                    </com.idunnololz.widgets.AnimatedExpandableListView>
+
+                    <!--ImageView
+                        android:id="@+id/imageView2"
+                        android:background="@android:color/transparent"
+                        android:src="@drawable/back_menu"
+                        android:scaleType="fitXY"
+                        android:layout_width="320dp"
+                        android:layout_height="match_parent"
+                        android:layout_above="@+id/filters_expandable_listview" /-->
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/user_info_container"
+                    android:layout_width="@dimen/slidemenu_content_width"
+                    android:layout_height="90dp">
+
+                    <com.makeramen.RoundedImageView
+                        xmlns:app="http://schemas.android.com/apk/res-auto"
+                        android:id="@+id/profile_picture"
+                        app:corner_radius="22dp"
+                        android:src="@drawable/user"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="22dp"
+                        android:layout_width="44dp"
+                        android:layout_height="44dp" />
+
+                    <TextView
+                        android:id="@+id/username_label"
+                        android:layout_marginLeft="5dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignTop="@+id/profile_picture"
+                        android:layout_toRightOf="@+id/profile_picture"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="xxxxxxxx"
+                        android:textSize="26dp"
+                        android:layout_marginTop="5dp"
+                        android:textColor="#4a4a4a" />
+                    <TextView
+                        android:id="@+id/logout_message_label"
+                        android:layout_below="@+id/username_label"
+                        android:layout_marginLeft="5dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_toRightOf="@+id/profile_picture"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/slidemenu_logout"
+                        android:textSize="15dp"
+                        android:textColor="#777777" />
+
+                    <Button
+                        android:id="@+id/logout_button"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignTop="@+id/profile_picture"
+                        android:layout_toRightOf="@+id/profile_picture"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@android:color/transparent"
+                        />
+
+                </RelativeLayout>
+
+
+                <TextView
+                    android:id="@+id/main_label"
+                    android:textColor="#5f5f5f"
+                    android:textSize="17sp"
+                    android:background="@drawable/back_title"
+                    android:layout_below="@id/user_info_container"
+                    android:layout_width="@dimen/slidemenu_content_width"
+                    android:layout_height="38dp"
+                    android:gravity="center_vertical"
+                    android:textAlignment="gravity"
+                    android:paddingLeft="22dp"
+                    android:text="@string/slidemenu_main"/>
+
+                <RelativeLayout
+                    android:id="@+id/container_live_button"
+                    android:layout_below="@id/main_label"
+                    android:layout_width="match_parent"
+                    android:layout_height="55dp">
+
+                    <Button
+                        android:id="@+id/live_button"
+                        android:text="@string/slidemenu_live_button"
+                        android:textColor="#5f5f5f"
+                        android:textSize="18sp"
+                        android:background="@drawable/slide_menu_button_bg"
+                        android:gravity="left"
+                        android:paddingLeft="22dp"
+                        android:paddingTop="8dp"
+                        android:layout_width="@dimen/slidemenu_content_width"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"/>
+
+                    <ImageView
+                        android:background="@drawable/arrow"
+                        android:layout_alignParentBottom="true"
+                        android:layout_width="290dp"
+                        android:layout_height="wrap_content" />
+
+                </RelativeLayout>
+
+
+                <RelativeLayout
+                    android:id="@+id/container_vod_button"
+                    android:layout_below="@id/container_live_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="55dp">
+
+                    <Button
+                        android:id="@+id/vod_button"
+                        android:layout_width="@dimen/slidemenu_content_width"
+                        android:layout_height="38dp"
+                        android:text="@string/slidemenu_vod_button"
+                        android:textColor="#5f5f5f"
+                        android:textSize="18sp"
+                        android:background="@drawable/slide_menu_button_bg"
+                        android:gravity="left"
+                        android:paddingLeft="22dp"
+                        android:paddingTop="8dp"
+                        android:layout_centerVertical="true"/>
+
+                </RelativeLayout>
+
+
+                <TextView
+                    android:id="@+id/filters_label"
+                    android:textColor="#5f5f5f"
+                    android:textSize="17sp"
+                    android:background="@drawable/back_title"
+                    android:layout_below="@id/container_vod_button"
+                    android:layout_width="@dimen/slidemenu_content_width"
+                    android:layout_height="38dp"
+                    android:gravity="center_vertical"
+                    android:textAlignment="gravity"
+                    android:paddingLeft="22dp"
+                    android:text="@string/slidemenu_filters"/>
+
+                <TextView
+                    android:id="@+id/recordatorio"
+                    android:textColor="#5f5f5f"
+                    android:textSize="17sp"
+                    android:background="@drawable/back_title"
+
+                    android:layout_above="@+id/recordatorio_notificacion"
+                    android:layout_width="@dimen/slidemenu_content_width"
+                    android:layout_height="38dp"
+                    android:gravity="center_vertical"
+                    android:textAlignment="gravity"
+                    android:paddingLeft="22dp"
+                    android:text="RECORDATORIO"/>
+
+                <RelativeLayout
+                    android:id="@+id/recordatorio_evento"
+                    android:layout_above="@id/recordatorio_notificacion"
+                    android:layout_marginRight="20dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="55dp">
+
+                    <TextView
+                        android:id="@+id/recordatorio_evento_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/slidemenu_recordatorio_calendario"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="22dp"
+                        android:textColor="#5f5f5f"
+                        android:textSize="17sp"/>
+
+                    <cl.estadiocdf.EstadioCDF.utils.CheckBoxCustom
+                        android:id="@+id/recordatorio_evento_check"
+                        android:layout_height="35dp"
+                        android:layout_width="35dp"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="70dp"
+                        android:layout_alignParentRight="true"/>
+
+                    <ImageView
+                        android:background="@drawable/arrow"
+                        android:layout_alignParentBottom="true"
+                        android:layout_width="290dp"
+                        android:layout_height="wrap_content" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/recordatorio_notificacion"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginRight="20dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="55dp">
+
+                    <TextView
+                        android:id="@+id/recordatorio_notificacion_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/slidemenu_recordatorio_notificacion"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="22dp"
+                        android:textColor="#5f5f5f"
+                        android:textSize="17sp"/>
+
+                    <cl.estadiocdf.EstadioCDF.utils.CheckBoxCustom
+                        android:id="@+id/recordatorio_notificacion_check"
+                        android:layout_height="35dp"
+                        android:layout_width="35dp"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="70dp"
+                        android:layout_alignParentRight="true"/>
+
+                </RelativeLayout>
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</RelativeLayout>

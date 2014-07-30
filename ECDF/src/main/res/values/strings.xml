@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">EstadioCDF</string>
+    <string name="action_settings">Settings</string>
+
+    <!-- LOGIN -->
+    <string name="login_username_placeholder">Email</string>
+    <string name="login_password_placeholder">Password</string>
+    <string name="login_button">INICIAR SESIÓN</string>
+
+    <!-- Slide Menu -->
+    <string name="slidemenu_logout">CERRAR SESIÓN</string>
+    <string name="slidemenu_main">PRINCIPAL</string>
+    <string name="slidemenu_filters">FILTROS</string>
+    <string name="slidemenu_live_button">Evento en vivo</string>
+    <string name="slidemenu_vod_button">Vod</string>
+
+    <string name="slidemenu_recordatorio_calendario">Calendario</string>
+    <string name="slidemenu_recordatorio_notificacion">Notificación</string>
+
+    <!-- Share View -->
+    <string name="share_title">COMPARTIR</string>
+    <string name="imagepicker_title">SELECCIONA LA IMAGEN QUE DESEAS COMPARTIR</string>
+    <string name="publish_tweet_button">TWEET</string>
+    <string name="publish_facebook_button">PUBLICAR EN FACEBOOK</string>
+    <string name="publish_facebook_title">Publicar en Facebook</string>
+    <string name="publish_twitter_title">Publicar en Twitter</string>
+
+    <!-- Live View -->
+    <string name="live_reminder_button">RECORDAR</string>
+    <string name="live_nextmatches_header">PRÓXIMOS EVENTOS</string>
+    <string name="share_live_button">COMPARTIR PROGRAMA</string>
+
+    <!-- Live View Cell -->
+    <string name="livecell_vs_label">VS</string>
+
+    <!-- VOD -->
+    <string name="vod_highlight_title">DESTACADOS</string>
+    <string name="vod_highlight_refresh">REFRESH</string>
+    <string name="vod_last_programs_title">ÚLTIMOS PROGRAMAS</string>
+    <string name="vod_last_matches_title">ÚLTIMOS PARTIDOS</string>
+
+</resources>

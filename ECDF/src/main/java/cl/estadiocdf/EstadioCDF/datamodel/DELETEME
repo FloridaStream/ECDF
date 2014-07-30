@@ -1,0 +1,44 @@
+        self.liveStreamId = [dictionary objectForKey:@"_id"];
+        self.account = [dictionary objectForKey:@"account"];
+        self.ad = [dictionary objectForKey:@"ad"];
+        self.name = [dictionary objectForKey:@"name"];
+        self.playerSkin = [dictionary objectForKey:@"player_skin"];
+        self.preferedProtocol = [dictionary objectForKey:@"preferred_protocol"];
+
+        if ([dictionary objectForKey:@"recording_start_date"]  && ![[dictionary objectForKey:@"recording_start_date"] isKindOfClass:[NSNull class]]) {
+            self.recordingStartDate = [Functions stringToDate:[dictionary objectForKey:@"recording_start_date"]];
+        }
+
+
+        self.streamId = [dictionary objectForKey:@"stream_id"];
+        self.accessRules = [[AccessRules alloc] initWithDictionary:[dictionary objectForKey:@"access_rules"]];
+        self.viewingTimeLimit = [[ViewingTimeLimit alloc] initWithDictionary:[dictionary objectForKey:@"viewing_time_limit"]];
+        self.dateCreated = [Functions stringToDate:[dictionary objectForKey:@"date_created"]];
+        self.encondingProfiles = [[EncondingProfiles alloc] initWithDictionary:[dictionary objectForKey:@"encoding_profiles"]];
+        self.cdnZones = [dictionary objectForKey:@"cdn_zones"];
+        self.views = [dictionary objectForKey:@"views"];
+        self.recording  =[[dictionary objectForKey:@"recording"] boolValue];
+        self.closedAccess = [[dictionary objectForKey:@"closed_access"] boolValue];
+        self.online = [[dictionary objectForKey:@"online"] boolValue];
+        self.externalCDN = [[ExternalCDN alloc] initWithDictionary:[dictionary objectForKey:@"external_cdn"]];
+
+        NSMutableArray *tmpBackup = [NSMutableArray new];
+        NSMutableArray *tmpPrimary = [NSMutableArray new];
+        NSArray *jsonArrayBackup = [[dictionary objectForKey:@"entry_points"] objectForKey:@"backup"];
+        NSArray *jsonArrayPrimary = [[dictionary objectForKey:@"entry_points"] objectForKey:@"primary"];
+
+        for (NSDictionary *json in jsonArrayBackup) {
+            [tmpBackup addObject:[[EntryPoint alloc] initWithDictionary:json]];
+        }
+
+        for (NSDictionary *json in jsonArrayPrimary) {
+            [tmpPrimary addObject:[[EntryPoint alloc] initWithDictionary:json]];
+        }
+
+        self.entryPoints = [[NSDictionary alloc] initWithObjectsAndKeys:
+                                [[NSArray alloc] initWithArray:tmpBackup],@"backup",
+                                [[NSArray alloc] initWithArray:tmpPrimary],@"primary",
+                                nil
+                            ];
+
+        self.recordingDateDiff = [dictionary objectForKey:@"recording_date_diff"];
