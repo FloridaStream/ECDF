@@ -30,6 +30,8 @@ public class User implements DataModel, Serializable {
     private int tvChannelId;
     private boolean isCableProviderSelected;
 
+    public String nameFacebook;
+
 
     @DataMember(member = "id")
     public int getUserId() {

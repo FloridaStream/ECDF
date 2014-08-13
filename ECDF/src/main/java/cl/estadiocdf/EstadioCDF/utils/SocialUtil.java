@@ -38,22 +38,21 @@ public final class SocialUtil {
         fbparams.put("name", title);
         fbparams.put("caption", "Estadio CDF");
 
-        //"f0f2acce81dcf877141baca929eaee24"
-//publish_stream, email
-        FacebookHandle handle = new FacebookHandle(activity, "669627823083035", "public_profile, email");
+        FacebookHandle handle = new FacebookHandle(activity, "669627823083035", "publish_stream, email");             //  ECDF
+        //FacebookHandle handle = new FacebookHandle(activity, "238809549653178", "publish_stream, email");                //  Win Sports
 
         aq.auth(handle).ajax("https://graph.facebook.com/me/feed", fbparams, JSONObject.class, new AjaxCallback<JSONObject>(){
 
             @Override
             public void callback(String url, JSONObject object, AjaxStatus status) {
-
+                Log.e("Object",object.toString());
                 if(status.getCode() == 200) {
                     handler.done(null);
                 }
                 else {
+                    Log.e("Error","--> "+status.getMessage());
                     handler.done(new Exception(status.getMessage()));
                 }
-
             }
         });
 
@@ -64,34 +63,45 @@ public final class SocialUtil {
         if(tweet.length() > 140) {
             tweet = tweet.substring(0,140);
         }
+        Log.e("Tweet",tweet);
+        Log.e("paso 1","paso1");
 
-        TwitterHandle handle = new TwitterHandle(activity, "ORUGhRg8O2ieZdWUnY98A", "XLuLuGHHVdYz0LkXYRiXybBVPTAUcDvnCxCH1cATE");
+        //TwitterHandle handle = new TwitterHandle(activity, "ORUGhRg8O2ieZdWUnY98A", "XLuLuGHHVdYz0LkXYRiXybBVPTAUcDvnCxCH1cATE");
+        TwitterHandle handle = new TwitterHandle(activity, "nlAnf8iosPRaQB5bnpPCMMYmi", "xE3ulVA9wk54AnEKYHk5ebzD5DxeCudoLNFDOMFLj0XUMgXguV");
+        //TwitterHandle handle = new TwitterHandle(activity, "hLOEaa7w7tL0vJjESgrOcNOrS", "r1QKZ2PKpjflPD4QMLLPhLPELGlXLLjEtGs22l2Zk2rcEWTJb7");
 
+        Log.e("paso 2","paso2");
         String url = "https://api.twitter.com/1.1/statuses/update.json";
 
         Map<String,String> params = new HashMap<String, String>();
         params.put("status", tweet);
 
+        Log.e("paso 3","paso3");
         aq.auth(handle).ajax(url, params, JSONObject.class, new AjaxCallback<JSONObject>() {
             @Override
             public void callback(String url, JSONObject object, AjaxStatus status) {
+
                 try {
-                    Log.d("Twitter", object.toString());
+                    Log.e("paso 7","paso7");
+                    Log.e("Twitter", object.toString());
 
                     if(status.getCode() == 200) {
+                        Log.e("Twitter","Done");
                         handler.done(null);
                     }
                     else {
+                        Log.e("Twitter","Done NOO");
                         handler.done(new Exception(status.getMessage()));
                     }
                 }
                 catch (Exception e) {
                     e.printStackTrace();
                     Log.e("Twitter", e.toString());
+                    Log.e("ERROR","--> "+e.getMessage());
                 }
-
             }
         });
+        Log.e("paso 5","paso5");
     }
 
     public abstract static class SocialUtilHandler {

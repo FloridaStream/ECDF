@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.util.Log;
 
 import com.androidquery.AQuery;
+import com.androidquery.auth.FacebookHandle;
 import com.androidquery.callback.AjaxCallback;
 import com.androidquery.callback.AjaxStatus;
 
@@ -25,6 +26,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.TimeZone;
 
 import cl.estadiocdf.EstadioCDF.datamodel.DataMember;
@@ -48,12 +50,17 @@ public class ServiceManager {
     public static final String UPDATE_SERVICE = "http://190.215.44.18/cdf/UpdateService.svc/NeedUpdate/";
     public static final String CURRENT_VERSION = "1";
 
+    /*private String PERMISSIONS = "publish_stream, email";
+    private String APP_ID = "669627823083035";
+    public FacebookHandle handler;*/
+
     private Context context;
     private AQuery aq;
 
     public ServiceManager(Context context) {
         this.context = context;
         aq = new AQuery(context);
+        //handler = new FacebookHandle((Activity) context, PERMISSIONS, APP_ID);
     }
 
     public void saveUserData(User user) {
@@ -66,6 +73,31 @@ public class ServiceManager {
         }
     }
 
+    public void getNameFacebook(Activity activity, final DataLoadedHandler<String> handler ) {
+
+        FacebookHandle handle = new FacebookHandle(activity, "669627823083035", "publish_stream, email");
+        aq.auth(handle).ajax("https://graph.facebook.com/me", JSONObject.class, new AjaxCallback<JSONObject>(){
+
+            @Override
+            public void callback(String url, JSONObject object, AjaxStatus status) {
+
+                if(status.getCode() == 200) {
+                    try {
+                        String name = object.getString("name");
+                        handler.loaded(name);
+                    }
+                    catch(Exception e ){
+                        e.printStackTrace();
+                    }
+                }
+                else {
+                    handler.error("");
+                }
+
+            }
+        });
+
+    }
     public User loadUserData() {
         try {
             SharedPreferences prefs = context.getSharedPreferences("cl.estadiocdf.EstadioCDF", Context.MODE_PRIVATE);

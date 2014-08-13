@@ -32,7 +32,7 @@ public class TwitterHandle extends AccountHandle{
 	private static final String OAUTH_REQUEST_TOKEN = "https://api.twitter.com/oauth/request_token";
 	private static final String OAUTH_ACCESS_TOKEN = "https://api.twitter.com/oauth/access_token";
 	private static final String OAUTH_AUTHORIZE = "https://api.twitter.com/oauth/authorize";
-	private static final String CALLBACK_URI = "app://testtwitter";
+	private static final String CALLBACK_URI = "http://estadiocdf.cl";
 	private static final String CANCEL_URI = "twitter://cancel";
 	
 	private Activity act;

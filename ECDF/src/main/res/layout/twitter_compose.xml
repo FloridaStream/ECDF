@@ -8,7 +8,6 @@
     android:layout_height="210dp">
 
     <RelativeLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
         android:background="#ECECEC"
         android:orientation="vertical"
         android:layout_width="match_parent"

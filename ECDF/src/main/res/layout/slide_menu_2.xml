@@ -318,6 +318,22 @@
 
                     </LinearLayout>
 
+                    <ImageView
+                        android:background="@drawable/arrow"
+                        android:layout_alignParentBottom="true"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+                    <TextView
+                        android:id="@+id/text_version"
+                        android:text="Versión 1.0.1"
+                        android:alpha="0.4"
+                        android:layout_gravity="center"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="7dp"
+                        android:layout_marginBottom="7dp"
+                    />
+
                 </LinearLayout>
 
             </ScrollView>

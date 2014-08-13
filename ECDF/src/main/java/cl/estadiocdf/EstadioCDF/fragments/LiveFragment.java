@@ -258,8 +258,9 @@ public class LiveFragment extends Fragment {
             liveLabel.setTypeface(lightCondensedItalic2);
 
             View shareLiveContainer = rootView.findViewById(R.id.share_live_container);
-            shareLiveContainer.setVisibility(View.VISIBLE);
-            liveShowContainer.setVisibility(View.VISIBLE);
+            //shareLiveContainer.setVisibility(View.VISIBLE);
+            //liveShowContainer.setVisibility(View.VISIBLE);
+
         }else if(type==1){
             if (splited.length == 2) {
                 aq.id(R.id.main_image_left_left).image(String.format(LIVE_LOCAL_TEAM_URL_FORMATSTR, splited[0]));
@@ -396,7 +397,8 @@ public class LiveFragment extends Fragment {
                 dialog.show(getFragmentManager(), "dialog");
             }
         });
-        shareLiveContainer.setVisibility(View.VISIBLE);
+        //shareLiveContainer.setVisibility(View.VISIBLE);
+        shareLiveContainer.bringToFront();
     }
 
     private void createLiveMediaCell(final LiveStreamSchedule media) {
@@ -824,10 +826,7 @@ public class LiveFragment extends Fragment {
         //values.put(CalendarContract.Events.DESCRIPTION, "");
 
         values.put(CalendarContract.Events.CALENDAR_ID, calID);
-
-
         values.put(CalendarContract.Events.EVENT_TIMEZONE, timeZone.getID());
-
         values.put(CalendarContract.Events.ALL_DAY, 0);
 
 

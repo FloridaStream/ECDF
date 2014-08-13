@@ -3,7 +3,8 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/AQuery/AQuery.iml" filepath="$PROJECT_DIR$/AQuery/AQuery.iml" />
-      <module fileurl="file://$PROJECT_DIR$/ECDF/ECDF.iml" filepath="$PROJECT_DIR$/ECDF/ECDF.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ECDF.iml" filepath="$PROJECT_DIR$/ECDF.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ECDF/ECDF-ECDF.iml" filepath="$PROJECT_DIR$/ECDF/ECDF-ECDF.iml" />
       <module fileurl="file://$PROJECT_DIR$/EstadioCDF.iml" filepath="$PROJECT_DIR$/EstadioCDF.iml" />
       <module fileurl="file://$PROJECT_DIR$/JWPAndroid/JWPAndroid.iml" filepath="$PROJECT_DIR$/JWPAndroid/JWPAndroid.iml" />
       <module fileurl="file://$PROJECT_DIR$/SlideExpandableListView/SlideExpandableListView.iml" filepath="$PROJECT_DIR$/SlideExpandableListView/SlideExpandableListView.iml" />

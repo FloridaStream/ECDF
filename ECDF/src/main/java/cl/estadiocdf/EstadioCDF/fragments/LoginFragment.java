@@ -68,6 +68,7 @@ public class LoginFragment extends Fragment{
         aq.id(R.id.login_banner).image("https://estadiocdf.cl/img/landing_ecdf_ipad.jpg#" + new Date().getTime(), false, false, 0, 0, new BitmapAjaxCallback(){
             @Override
             public void callback(String url, ImageView iv, Bitmap bm, AjaxStatus status){
+
                 aq.id(iv).image(bm, AQuery.RATIO_PRESERVE);
                 ImageView splash = (ImageView)iv.getRootView().findViewById(R.id.splash);
                 Animation fadeOut = AnimationUtils.loadAnimation(getActivity(), R.anim.fade_out);
@@ -168,7 +169,6 @@ public class LoginFragment extends Fragment{
                                 dialog.setMessage("Su cuenta se encuentra desactivada");
                                 dialog.show(getFragmentManager(), "dialog");
                             }
-
                         }
 
                         @Override
