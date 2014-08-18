@@ -46,7 +46,7 @@ public class MessageDialog extends DialogFragment{
         titleLabel.setTypeface(lightCondensedItalic2);
         titleLabel.setText(title);
 
-        if(title=="" || title==null){
+        if(title == "" || title == null){
             titleLabel.setVisibility(View.GONE);
         }
 

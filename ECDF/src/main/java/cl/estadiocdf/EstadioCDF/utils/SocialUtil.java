@@ -66,11 +66,17 @@ public final class SocialUtil {
         Log.e("Tweet",tweet);
         Log.e("paso 1","paso1");
 
-        //TwitterHandle handle = new TwitterHandle(activity, "ORUGhRg8O2ieZdWUnY98A", "XLuLuGHHVdYz0LkXYRiXybBVPTAUcDvnCxCH1cATE");
-        TwitterHandle handle = new TwitterHandle(activity, "nlAnf8iosPRaQB5bnpPCMMYmi", "xE3ulVA9wk54AnEKYHk5ebzD5DxeCudoLNFDOMFLj0XUMgXguV");
-        //TwitterHandle handle = new TwitterHandle(activity, "hLOEaa7w7tL0vJjESgrOcNOrS", "r1QKZ2PKpjflPD4QMLLPhLPELGlXLLjEtGs22l2Zk2rcEWTJb7");
+        //TwitterHandle handle = new TwitterHandle(activity, "ORUGhRg8O2ieZdWUnY98A", "XLuLuGHHVdYz0LkXYRiXybBVPTAUcDvnCxCH1cATE");                 //No se
+        //TwitterHandle handle = new TwitterHandle(activity, "nlAnf8iosPRaQB5bnpPCMMYmi", "xE3ulVA9wk54AnEKYHk5ebzD5DxeCudoLNFDOMFLj0XUMgXguV");    // ECDF
+        /*TwitterHandle handle = new TwitterHandle(activity, "HT0Aryv4yaooWQ2LlB0OA4kV3", "9w5EgfurnXK6aZs3fTGMfmJlHzKspyA2BLHzWt4elnyiOZfJya");
 
         Log.e("paso 2","paso2");
+        String url = "https://api.twitter.com/1.1/statuses/update.json";
+
+        Map<String,String> params = new HashMap<String, String>();
+        params.put("status", tweet);*/
+
+        TwitterHandle handle = new TwitterHandle(activity, "I81MsOAJdP9fHRdVLk1C6VyNN", "yUV7d6Pu94fGx2SljSvxy3FoQHAfDLCH3CvhJM1QOx9FjqPCII");
         String url = "https://api.twitter.com/1.1/statuses/update.json";
 
         Map<String,String> params = new HashMap<String, String>();
@@ -80,7 +86,6 @@ public final class SocialUtil {
         aq.auth(handle).ajax(url, params, JSONObject.class, new AjaxCallback<JSONObject>() {
             @Override
             public void callback(String url, JSONObject object, AjaxStatus status) {
-
                 try {
                     Log.e("paso 7","paso7");
                     Log.e("Twitter", object.toString());
@@ -109,7 +114,6 @@ public final class SocialUtil {
         public void done(Exception e) {
 
         }
-
     }
 
 }

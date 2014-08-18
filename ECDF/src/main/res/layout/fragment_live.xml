@@ -164,7 +164,7 @@
             android:background="@drawable/back_fecha"
             android:layout_width="360dp"
             android:layout_height="270dp"
-            android:visibility="gone">
+            android:visibility="visible">
 
             <TextView
                 android:id="@+id/day_label"
@@ -489,6 +489,8 @@
             android:paddingTop="8dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:clickable="true"
+            android:focusable="true"
             android:visibility="visible">
 
             <Button
@@ -499,6 +501,8 @@
                 android:background="@android:color/transparent"
                 android:textColor="#ff525252"
                 android:textSize="14sp"
+                android:focusable="false"
+                android:clickable="false"
                 android:text="@string/share_live_button"/>
 
             <ImageView

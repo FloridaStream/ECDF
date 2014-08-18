@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import cl.estadiocdf.EstadioCDF.R;
 import cl.estadiocdf.EstadioCDF.activities.MainActivity;
+import cl.estadiocdf.EstadioCDF.dialogs.MessageDialog;
 
 /**
  * Created by Esteban- on 23-06-14.

@@ -143,8 +143,7 @@ public class LiveFragment extends Fragment {
                             ++loadedSources;
                             if (liveStreamSchedules.size() > 0 && loadedSources == totalSources) {
                                 nextShow = liveStreamSchedules.get(0);
-                                TimerClass timerClass = new TimerClass();
-                                timerClass.execute();
+//cghhncgh
                                 Date now = new Date();
                                 if (liveStreamSchedules.size() > 1 &&
                                         now.getTime() > liveStreamSchedules.get(0).getStartDate().getTime() && now.getTime() < liveStreamSchedules.get(0).getEndDate().getTime() &&
@@ -168,6 +167,8 @@ public class LiveFragment extends Fragment {
                                 for (int i = 1; i < liveStreamSchedules.size(); ++i) {
                                     createLiveMediaCell(liveStreamSchedules.get(i));
                                 }
+                                TimerClass timerClass = new TimerClass();
+                                timerClass.execute();
                             }
                         }
                     });

@@ -43,7 +43,7 @@ public class Media implements DataModel, Serializable {
             }
         }
         catch (Exception e) {
-
+            e.printStackTrace();
         }
 
         return false;
@@ -58,7 +58,7 @@ public class Media implements DataModel, Serializable {
             }
         }
         catch (Exception e) {
-
+            e.printStackTrace();
         }
 
         return false;

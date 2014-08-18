@@ -27,6 +27,7 @@ import cl.estadiocdf.EstadioCDF.datamodel.Media;
 import cl.estadiocdf.EstadioCDF.datamodel.Meta;
 import cl.estadiocdf.EstadioCDF.datamodel.TokenIssue;
 import cl.estadiocdf.EstadioCDF.delegates.VideoDelegate;
+import cl.estadiocdf.EstadioCDF.dialogs.MessageDialog;
 import cl.estadiocdf.EstadioCDF.serializables.MediaSerializable;
 import cl.estadiocdf.EstadioCDF.services.ServiceManager;
 
@@ -286,6 +287,10 @@ public class VideoActivity extends Activity implements
             this.restoreAttempts++;
         }else {
             Log.d("STREAM", "Max restore attempts for streaming reached!!! May God have mercy of our souls!!!!");
+            MessageDialog dialog = new MessageDialog(MessageDialog.LENGTH_LONG);
+            dialog.setTitle("ERROR");
+            dialog.setMessage("301 No se puede reproducir este video");
+            //dialog.show(getFragmentManager(),"");
         }
     }
 }
