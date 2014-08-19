@@ -5,9 +5,20 @@ import android.animation.ObjectAnimator;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageButton;
+
+import com.androidquery.AQuery;
+import com.androidquery.auth.TwitterHandle;
+import com.androidquery.callback.AjaxCallback;
+import com.androidquery.callback.AjaxStatus;
+
+import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import cl.estadiocdf.EstadioCDF.R;
 import cl.estadiocdf.EstadioCDF.datamodel.Filter;
@@ -20,6 +31,7 @@ import cl.estadiocdf.EstadioCDF.fragments.HelpFragment;
 import cl.estadiocdf.EstadioCDF.fragments.LiveFragment;
 import cl.estadiocdf.EstadioCDF.fragments.SlideMenu;
 import cl.estadiocdf.EstadioCDF.fragments.VodFragment;
+import cl.estadiocdf.EstadioCDF.utils.GlobalECDF;
 
 /**
  * Created by Franklin Cruz on 17-02-14.
@@ -267,7 +279,15 @@ public class MainActivity extends ActionBarActivity {
                 .replace(R.id.main_container, liveFragment)
                 .commit();
     }
+    @Override
+    public void onStart() {
+        super.onStart();
+        //EasyTracker.getInstance(getApplication()).activityStart(this); // Add this method.
+    }
 
-
-
+    @Override
+    protected void onStop() {
+        super.onStop();
+        //EasyTracker.getInstance(getApplication()).activityStop(this);
+    }
 }

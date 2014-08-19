@@ -1,5 +1,7 @@
 package cl.estadiocdf.EstadioCDF.dialogs;
 
+import android.app.Activity;
+import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
@@ -18,6 +20,7 @@ import cl.estadiocdf.EstadioCDF.R;
 import cl.estadiocdf.EstadioCDF.datamodel.Media;
 import cl.estadiocdf.EstadioCDF.datamodel.User;
 import cl.estadiocdf.EstadioCDF.services.ServiceManager;
+import cl.estadiocdf.EstadioCDF.utils.DataClean;
 import cl.estadiocdf.EstadioCDF.utils.SocialUtil;
 
 /**
@@ -84,6 +87,7 @@ public class PostDialog extends DialogFragment {
 
         final EditText editText = (EditText)rootView.findViewById(R.id.post_edittext);
         editText.setText(this.text);
+        //final Context activity = getActivity().getApplicationContext();
 
         Button tweetButton = (Button)rootView.findViewById(R.id.post_button);
         tweetButton.setOnClickListener(new View.OnClickListener() {
@@ -104,8 +108,8 @@ public class PostDialog extends DialogFragment {
                     }
                     else {
                         Log.e("Button ","Twitter 2");
+                        //DataClean.garbageCollector("Post Dialog");
                         socialUtil.tweet(getActivity(), editText.getText().toString(), new SocialUtil.SocialUtilHandler() {
-
 
                             @Override
                             public void done(Exception e) {

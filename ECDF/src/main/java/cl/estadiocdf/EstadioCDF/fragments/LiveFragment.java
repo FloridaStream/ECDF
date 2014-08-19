@@ -62,6 +62,7 @@ import cl.estadiocdf.EstadioCDF.dialogs.ShareDialog;
 import cl.estadiocdf.EstadioCDF.notification.ReceiverNotification;
 import cl.estadiocdf.EstadioCDF.serializables.MediaSerializable;
 import cl.estadiocdf.EstadioCDF.services.ServiceManager;
+import cl.estadiocdf.EstadioCDF.utils.GlobalECDF;
 
 /**
  * Created by Franklin Cruz on 17-02-14.
@@ -105,6 +106,8 @@ public class LiveFragment extends Fragment {
         progress.setCancelable(false);
         progress.setCanceledOnTouchOutside(false);
 
+        ((GlobalECDF)getActivity().getApplication()).sendAnaliticsScreen("Pantalla Live");
+
         final Typeface extraBold = Typeface.createFromAsset(getActivity().getAssets(), "fonts/AkzidenzGrotesk-ExtraBoldCondItalic.otf");
 //        Typeface lightCondensedItalic = Typeface.createFromAsset(getActivity().getAssets(), "fonts/FuturaLT-Oblique.ttf");
         Typeface lightCondensedItalic2 = Typeface.createFromAsset(getActivity().getAssets(), "fonts/FuturaLT-CondensedOblique.ttf");
@@ -143,7 +146,6 @@ public class LiveFragment extends Fragment {
                             ++loadedSources;
                             if (liveStreamSchedules.size() > 0 && loadedSources == totalSources) {
                                 nextShow = liveStreamSchedules.get(0);
-//cghhncgh
                                 Date now = new Date();
                                 if (liveStreamSchedules.size() > 1 &&
                                         now.getTime() > liveStreamSchedules.get(0).getStartDate().getTime() && now.getTime() < liveStreamSchedules.get(0).getEndDate().getTime() &&
@@ -182,7 +184,7 @@ public class LiveFragment extends Fragment {
         remindButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                ((GlobalECDF)getActivity().getApplication()).sendAnalitics("Click-Agendar");
                 Animation animation = AnimationUtils.loadAnimation(getActivity(), R.anim.button_discrete_bounce);
                 v.startAnimation(animation);
 
@@ -237,6 +239,7 @@ public class LiveFragment extends Fragment {
             public void onClick(View view) {
                 Date now = new Date();
                 if(now.getTime() > media.getStartDate().getTime() && now.getTime() < (media.getEndDate().getTime())) {
+                    ((GlobalECDF)getActivity().getApplication()).sendAnalitics("Click-Play");
                     Intent intent = new Intent(getActivity(), VideoActivity.class);
                     MediaSerializable mediaSerializable = new MediaSerializable();
                     mediaSerializable.setLiveStreamSchedule(media);
@@ -259,8 +262,8 @@ public class LiveFragment extends Fragment {
             liveLabel.setTypeface(lightCondensedItalic2);
 
             View shareLiveContainer = rootView.findViewById(R.id.share_live_container);
-            //shareLiveContainer.setVisibility(View.VISIBLE);
-            //liveShowContainer.setVisibility(View.VISIBLE);
+            shareLiveContainer.setVisibility(View.VISIBLE);
+            liveShowContainer.setVisibility(View.VISIBLE);
 
         }else if(type==1){
             if (splited.length == 2) {
@@ -525,7 +528,7 @@ public class LiveFragment extends Fragment {
         facebookButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                ((GlobalECDF)getActivity().getApplication()).sendAnalitics("Facebook-Share");
                 if (splited.length > 1) {
                     if (videoDelegate != null) {
                         videoDelegate.displayImageChooser(
@@ -558,7 +561,7 @@ public class LiveFragment extends Fragment {
         twitterButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                ((GlobalECDF)getActivity().getApplication()).sendAnalitics("Twitter-Share");
                 if (splited.length > 1) {
                     String text = String.format("Voy a ver  %s por Estadio CDF el día %s de %s del %s a las %s", media.getName(),dia.format(media.getStartDate()),
                             mes.format(media.getStartDate()), año.format(media.getStartDate()), hora.format(media.getStartDate()));
@@ -583,6 +586,7 @@ public class LiveFragment extends Fragment {
         emailButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                ((GlobalECDF)getActivity().getApplication()).sendAnalitics("eMail-Share");
                 if (splited.length > 1) {
                     if (videoDelegate != null) {
                         videoDelegate.displayImageChooser(
@@ -668,7 +672,7 @@ public class LiveFragment extends Fragment {
             public void onClick(View v) {
                 ClipboardManager clipboard = (ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
                 clipboard.setPrimaryClip(ClipData.newPlainText("CDF", "www.estadiocdf.cl"));
-
+                ((GlobalECDF)getActivity().getApplication()).sendAnalitics("Copiar-Link");
                 MessageDialog dialog = new MessageDialog(MessageDialog.LENGTH_SHORT);
                 dialog.setTitle("");
                 dialog.setMessage("Enlace copiado al portapapeles.");
@@ -680,7 +684,7 @@ public class LiveFragment extends Fragment {
         reminderButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                ((GlobalECDF)getActivity().getApplication()).sendAnalitics("Click-Agendar");
                 Animation animation = AnimationUtils.loadAnimation(getActivity(), R.anim.button_bounce);
                 v.startAnimation(animation);
                 SharedPreferences  prefs = getActivity().getSharedPreferences("recordatorio", Context.MODE_PRIVATE);

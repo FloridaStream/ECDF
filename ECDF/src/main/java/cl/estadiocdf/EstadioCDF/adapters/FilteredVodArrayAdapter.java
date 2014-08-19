@@ -31,6 +31,7 @@ import cl.estadiocdf.EstadioCDF.datamodel.Media;
 import cl.estadiocdf.EstadioCDF.datamodel.Thumbnail;
 import cl.estadiocdf.EstadioCDF.delegates.FilteredArrayAdapterDelegate;
 import cl.estadiocdf.EstadioCDF.dialogs.PostDialog;
+import cl.estadiocdf.EstadioCDF.utils.GlobalECDF;
 
 /**
  * Created by Franklin Cruz on 27-02-14.
@@ -162,7 +163,7 @@ public class FilteredVodArrayAdapter extends StickyGridHeadersSimpleArrayAdapter
         facebookButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                ((GlobalECDF)getActivity().getApplication()).sendAnalitics("Facebook-Share");
                 if(item.belongsToCategoryByName("Partido")) {
                     String text = String.format("Me repito el plato: Estoy viendo en VOD %s por Estadio CDF", item.getTitle());
 
@@ -184,7 +185,7 @@ public class FilteredVodArrayAdapter extends StickyGridHeadersSimpleArrayAdapter
         twitterButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                ((GlobalECDF)getActivity().getApplication()).sendAnalitics("Twitter-Share");
                 if(item.belongsToCategoryByName("Partido")) {
                     String text = String.format("Me repito el plato: Estoy viendo en VOD %s por Estadio CDF", item.getTitle());
 
@@ -209,6 +210,7 @@ public class FilteredVodArrayAdapter extends StickyGridHeadersSimpleArrayAdapter
             @Override
             public void onClick(View v) {
 
+                ((GlobalECDF)getActivity().getApplication()).sendAnalitics("eMail-Share");
                 if(item.belongsToCategoryByName("Partido")) {
                     String text = String.format("Me repito el plato: Estoy viendo en VOD %s por Estadio CDF", item.getTitle());
 
@@ -279,6 +281,7 @@ public class FilteredVodArrayAdapter extends StickyGridHeadersSimpleArrayAdapter
                 ClipboardManager clipboard = (ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
                 clipboard.setPrimaryClip(ClipData.newPlainText("CDF", "www.estadiocdf.cl"));
 
+                ((GlobalECDF)getActivity().getApplication()).sendAnalitics("Copiar-Link");
                 Toast.makeText(getActivity(), "Enlace copiado al portapapeles", Toast.LENGTH_SHORT).show();
             }
         });

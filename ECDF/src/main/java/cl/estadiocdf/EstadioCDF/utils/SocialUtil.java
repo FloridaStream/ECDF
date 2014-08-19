@@ -10,6 +10,7 @@ import com.androidquery.auth.TwitterHandle;
 import com.androidquery.callback.AjaxCallback;
 import com.androidquery.callback.AjaxStatus;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.HashMap;
@@ -63,52 +64,37 @@ public final class SocialUtil {
         if(tweet.length() > 140) {
             tweet = tweet.substring(0,140);
         }
-        Log.e("Tweet",tweet);
-        Log.e("paso 1","paso1");
-
-        //TwitterHandle handle = new TwitterHandle(activity, "ORUGhRg8O2ieZdWUnY98A", "XLuLuGHHVdYz0LkXYRiXybBVPTAUcDvnCxCH1cATE");                 //No se
-        //TwitterHandle handle = new TwitterHandle(activity, "nlAnf8iosPRaQB5bnpPCMMYmi", "xE3ulVA9wk54AnEKYHk5ebzD5DxeCudoLNFDOMFLj0XUMgXguV");    // ECDF
-        /*TwitterHandle handle = new TwitterHandle(activity, "HT0Aryv4yaooWQ2LlB0OA4kV3", "9w5EgfurnXK6aZs3fTGMfmJlHzKspyA2BLHzWt4elnyiOZfJya");
-
-        Log.e("paso 2","paso2");
+        //AQuery aq = new AQuery(activity);
+        //TwitterHandle handle = new TwitterHandle(activity, "WYGXn3E4f4uIvQwHeOQPeonjj", "kTKoObcIMhjfF6fRNUFBl3EoqryD8ObdOAxkgOXfL2iklJzZMy");
+        TwitterHandle handle = new TwitterHandle((Activity)activity, "EyE4GnDdysWwz2IcD4CvLC2vL", "VaRGKiqmc10WIFJsXheG2EwTAZfJURzor4eADhwDkiey8wjYlg");
         String url = "https://api.twitter.com/1.1/statuses/update.json";
-
-        Map<String,String> params = new HashMap<String, String>();
-        params.put("status", tweet);*/
-
-        TwitterHandle handle = new TwitterHandle(activity, "I81MsOAJdP9fHRdVLk1C6VyNN", "yUV7d6Pu94fGx2SljSvxy3FoQHAfDLCH3CvhJM1QOx9FjqPCII");
-        String url = "https://api.twitter.com/1.1/statuses/update.json";
+        Log.e("twitter", handle.toString());
 
         Map<String,String> params = new HashMap<String, String>();
         params.put("status", tweet);
-
-        Log.e("paso 3","paso3");
+        Log.e("Che","Che Cuantas copas tenes?");
         aq.auth(handle).ajax(url, params, JSONObject.class, new AjaxCallback<JSONObject>() {
             @Override
             public void callback(String url, JSONObject object, AjaxStatus status) {
+                Log.e("Twitter Sttus",status.getMessage());
                 try {
-                    Log.e("paso 7","paso7");
-                    Log.e("Twitter", object.toString());
+                    Log.d("Twitter", object.toString());
 
                     if(status.getCode() == 200) {
-                        Log.e("Twitter","Done");
                         handler.done(null);
                     }
                     else {
-                        Log.e("Twitter","Done NOO");
                         handler.done(new Exception(status.getMessage()));
                     }
                 }
                 catch (Exception e) {
                     e.printStackTrace();
                     Log.e("Twitter", e.toString());
-                    Log.e("ERROR","--> "+e.getMessage());
                 }
+
             }
         });
-        Log.e("paso 5","paso5");
     }
-
     public abstract static class SocialUtilHandler {
 
         public void done(Exception e) {

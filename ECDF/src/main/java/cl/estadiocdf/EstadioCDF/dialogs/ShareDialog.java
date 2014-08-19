@@ -28,6 +28,7 @@ import cl.estadiocdf.EstadioCDF.datamodel.LiveStreamSchedule;
 import cl.estadiocdf.EstadioCDF.delegates.ImageChooserDelegate;
 import cl.estadiocdf.EstadioCDF.delegates.VideoDelegate;
 import cl.estadiocdf.EstadioCDF.fragments.LiveFragment;
+import cl.estadiocdf.EstadioCDF.utils.GlobalECDF;
 
 /**
  * Created by Boris on 14-04-14.
@@ -63,6 +64,7 @@ public class ShareDialog extends DialogFragment{
             @Override
             public void onClick(View view) {
                 getDialog().cancel();
+                ((GlobalECDF)getActivity().getApplication()).sendAnaliticsScreen("Facebook-Share");
                 if (videoDelegate != null) {
                     if (splited.length == 2) {
                         videoDelegate.displayImageChooser(
@@ -100,6 +102,7 @@ public class ShareDialog extends DialogFragment{
             @Override
             public void onClick(View view) {
                 getDialog().cancel();
+                ((GlobalECDF)getActivity().getApplication()).sendAnaliticsScreen("Twitter-Share");
                 if (splited.length == 2) {
                     String text = String.format("No me falta fútbol: Estoy viendo EN VIVO %s por Estadio CDF", media.getName());
                     PostDialog postDialog = new PostDialog(text, media.getName(), "", PostDialog.TWITTER_SHARE);
@@ -127,7 +130,7 @@ public class ShareDialog extends DialogFragment{
                                     @Override
                                     public void onImageSelected(String url) {
                                         String text = String.format("No me falta fútbol: Estoy viendo EN VIVO %s por Estadio CDF", media.getName());
-
+                                        ((GlobalECDF)getActivity().getApplication()).sendAnaliticsScreen("eMail-Share");
                                         Intent i = new Intent(Intent.ACTION_SEND);
                                         i.setType("message/rfc822");
 
@@ -165,7 +168,7 @@ public class ShareDialog extends DialogFragment{
                                     @Override
                                     public void onImageSelected(String url) {
                                         String text = String.format("Estoy viendo EN VIVO %s por Estadio CDF", media.getName());
-
+                                        ((GlobalECDF)getActivity().getApplication()).sendAnaliticsScreen("eMail-Share");
                                         Intent i = new Intent(Intent.ACTION_SEND);
                                         i.setType("message/rfc822");
 
@@ -210,6 +213,8 @@ public class ShareDialog extends DialogFragment{
                 dialog.setTitle("");
                 dialog.setMessage("Enlace copiado al portapapeles.");
                 dialog.show(getFragmentManager(), "dialog");
+
+                ((GlobalECDF)getActivity().getApplication()).sendAnaliticsScreen("Copiar-Link");
             }
         });
 

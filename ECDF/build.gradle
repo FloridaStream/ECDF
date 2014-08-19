@@ -39,4 +39,6 @@ dependencies {
     compile project(':JWPAndroid')
     compile files('../lib/twitter4j-core-4.0.1.jar')
     compile project(':SlideExpandableListView')
+    //compile files('../lib/libGoogleAnalyticsServices.jar')
+    compile files('../lib/google-play-services.jar')
 }

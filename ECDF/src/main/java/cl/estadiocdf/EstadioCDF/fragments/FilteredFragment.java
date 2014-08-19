@@ -23,6 +23,7 @@ import cl.estadiocdf.EstadioCDF.datamodel.Media;
 import cl.estadiocdf.EstadioCDF.delegates.FilteredArrayAdapterDelegate;
 import cl.estadiocdf.EstadioCDF.serializables.MediaSerializable;
 import cl.estadiocdf.EstadioCDF.services.ServiceManager;
+import cl.estadiocdf.EstadioCDF.utils.GlobalECDF;
 
 /**
  * Created by Franklin Cruz on 27-02-14.
@@ -49,6 +50,8 @@ public class FilteredFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         Typeface lightCondensedItalic2 = Typeface.createFromAsset(getActivity().getAssets(), "fonts/FuturaLT-CondensedOblique.ttf");
+
+        ((GlobalECDF)getActivity().getApplication()).sendAnaliticsScreen("Vista Filtros");
 
         View rootView = inflater.inflate(R.layout.fragment_filtered, container, false);
 
@@ -109,6 +112,7 @@ public class FilteredFragment extends Fragment {
                 adapter.setDelegate(new FilteredArrayAdapterDelegate() {
                     @Override
                     public void onShowViewClicked(Media media) {
+                        ((GlobalECDF)getActivity().getApplication()).sendAnalitics("Play-Video-Filtros");
                         Intent intent = new Intent(getActivity(), VideoActivity.class);
                         MediaSerializable mediaSerializable = new MediaSerializable();
                         mediaSerializable.setMedia(media);

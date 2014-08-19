@@ -38,6 +38,7 @@ import cl.estadiocdf.EstadioCDF.dialogs.MessageDialogConfirm;
 import cl.estadiocdf.EstadioCDF.dialogs.PostDialog;
 import cl.estadiocdf.EstadioCDF.serializables.MediaSerializable;
 import cl.estadiocdf.EstadioCDF.services.ServiceManager;
+import cl.estadiocdf.EstadioCDF.utils.GlobalECDF;
 
 /**
  * Created by Franklin Cruz on 26-02-14.
@@ -83,6 +84,8 @@ public class VodFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         inicio = System.currentTimeMillis();
         Typeface lightCondensedItalic2 = Typeface.createFromAsset(getActivity().getAssets(), "fonts/FuturaLT-CondensedOblique.ttf");
+
+        ((GlobalECDF)getActivity().getApplication()).sendAnaliticsScreen("Vista VOD");
 
         View rootView = inflater.inflate(R.layout.fragment_vod, container, false);
         CheckTimer checkTimer = new CheckTimer();
@@ -280,6 +283,7 @@ public class VodFragment extends Fragment {
             show.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    ((GlobalECDF)getActivity().getApplication()).sendAnalitics("Play-Video-VOD");
                     Intent intent = new Intent(getActivity(), VideoActivity.class);
                     MediaSerializable mediaSerializable = new MediaSerializable();
                     mediaSerializable.setMedia(m);
@@ -334,7 +338,7 @@ public class VodFragment extends Fragment {
             facebookButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
+                    ((GlobalECDF)getActivity().getApplication()).sendAnalitics("Facebook-Share");
                     if(m.belongsToCategoryByName("Partido")) {
                         String text = String.format("Todo lo que me gusta del fútbol: Estoy viendo en VOD %s por Estadio CDF", m.getTitle());
 
@@ -356,7 +360,7 @@ public class VodFragment extends Fragment {
             twitterButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
+                    ((GlobalECDF)getActivity().getApplication()).sendAnalitics("Twitter-Share");
                     if(m.belongsToCategoryByName("Partido")) {
                         String text = String.format("Todo lo que me gusta del fútbol: Estoy viendo en VOD %s por Estadio CDF", m.getTitle());
 
@@ -380,7 +384,7 @@ public class VodFragment extends Fragment {
             emailButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
+                    ((GlobalECDF)getActivity().getApplication()).sendAnalitics("eMail-Share");
                     if(m.belongsToCategoryByName("Partido")) {
                         String text = String.format("Todo lo que me gusta del fútbol: Estoy viendo en VOD %s por Estadio CDF", m.getTitle());
 
@@ -456,7 +460,7 @@ public class VodFragment extends Fragment {
                 public void onClick(View v) {
                     ClipboardManager clipboard = (ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
                     clipboard.setPrimaryClip(ClipData.newPlainText("CDF", "www.estadiocdf.cl"));
-
+                    ((GlobalECDF)getActivity().getApplication()).sendAnalitics("Copiar-Link");
                     MessageDialog dialog = new MessageDialog(MessageDialog.LENGTH_SHORT);
                     dialog.setTitle("");
                     dialog.setMessage("Enlace copiado al portapapeles.");
@@ -530,6 +534,7 @@ public class VodFragment extends Fragment {
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(getActivity(), VideoActivity.class);
+                    ((GlobalECDF)getActivity().getApplication()).sendAnalitics("Play-Video-VOD");
                     MediaSerializable mediaSerializable = new MediaSerializable();
                     mediaSerializable.setMedia(m);
                     intent.putExtra("media",mediaSerializable);
@@ -581,7 +586,7 @@ public class VodFragment extends Fragment {
             facebookButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
+                    ((GlobalECDF)getActivity().getApplication()).sendAnalitics("Facebook-Share");
                     if(m.belongsToCategoryByName("Partido")) {
                         String text = String.format("Me repito el plato: Estoy viendo en VOD %s por Estadio CDF", m.getTitle());
 
@@ -603,7 +608,7 @@ public class VodFragment extends Fragment {
             twitterButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
+                    ((GlobalECDF)getActivity().getApplication()).sendAnalitics("Twitter-Share");
                     if(m.belongsToCategoryByName("Partido")) {
                         String text = String.format("Me repito el plato: Estoy viendo en VOD %s por Estadio CDF", m.getTitle());
 
@@ -627,7 +632,7 @@ public class VodFragment extends Fragment {
             emailButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
+                    ((GlobalECDF)getActivity().getApplication()).sendAnalitics("eMail-Share");
                     if(m.belongsToCategoryByName("Partido")) {
                         String text = String.format("Me repito el plato: Estoy viendo en VOD %s por Estadio CDF", m.getTitle());
 
@@ -703,6 +708,8 @@ public class VodFragment extends Fragment {
                 public void onClick(View v) {
                     ClipboardManager clipboard = (ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
                     clipboard.setPrimaryClip(ClipData.newPlainText("CDF", "www.estadiocdf.cl"));
+
+                    ((GlobalECDF)getActivity().getApplication()).sendAnalitics("Copiar-Link");
 
                     MessageDialog dialog = new MessageDialog(MessageDialog.LENGTH_SHORT);
                     dialog.setTitle("");
@@ -774,6 +781,7 @@ public class VodFragment extends Fragment {
             show.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    ((GlobalECDF)getActivity().getApplication()).sendAnalitics("Play-Video-VOD");
                     Intent intent = new Intent(getActivity(), VideoActivity.class);
                     MediaSerializable mediaSerializable = new MediaSerializable();
                     mediaSerializable.setMedia(m);
@@ -822,6 +830,7 @@ public class VodFragment extends Fragment {
             facebookButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    ((GlobalECDF)getActivity().getApplication()).sendAnalitics("Facebook-Share");
 
                     if(m.belongsToCategoryByName("Partido")) {
                         String text = String.format("Me repito el plato: Estoy viendo en VOD %s por Estadio CDF", m.getTitle());
@@ -845,6 +854,7 @@ public class VodFragment extends Fragment {
                 @Override
                 public void onClick(View v) {
 
+                    ((GlobalECDF)getActivity().getApplication()).sendAnalitics("Twitter-Share");
                     if(m.belongsToCategoryByName("Partido")) {
                         String text = String.format("Me repito el plato: Estoy viendo en VOD %s por Estadio CDF", m.getTitle());
 
@@ -869,6 +879,7 @@ public class VodFragment extends Fragment {
                 @Override
                 public void onClick(View v) {
 
+                    ((GlobalECDF)getActivity().getApplication()).sendAnalitics("eMail-Share");
                     if(m.belongsToCategoryByName("Partido")) {
                         String text = String.format("Me repito el plato: Estoy viendo en VOD %s por Estadio CDF", m.getTitle());
 
@@ -944,6 +955,8 @@ public class VodFragment extends Fragment {
                 public void onClick(View v) {
                     ClipboardManager clipboard = (ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
                     clipboard.setPrimaryClip(ClipData.newPlainText("CDF", "www.estadiocdf.cl"));
+
+                    ((GlobalECDF)getActivity().getApplication()).sendAnalitics("Copiar-Link");
 
                     MessageDialog dialog = new MessageDialog(MessageDialog.LENGTH_SHORT);
                     dialog.setTitle("");
