@@ -32,9 +32,13 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.androidquery.AQuery;
+import com.androidquery.auth.TwitterHandle;
+import com.androidquery.callback.AjaxCallback;
+import com.androidquery.callback.AjaxStatus;
+
+import org.json.JSONObject;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -45,8 +49,10 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.TimeZone;
 import java.util.UUID;
 
@@ -54,6 +60,7 @@ import cl.estadiocdf.EstadioCDF.R;
 import cl.estadiocdf.EstadioCDF.activities.VideoActivity;
 import cl.estadiocdf.EstadioCDF.datamodel.LiveStream;
 import cl.estadiocdf.EstadioCDF.datamodel.LiveStreamSchedule;
+import cl.estadiocdf.EstadioCDF.delegates.DelegateTwitter;
 import cl.estadiocdf.EstadioCDF.delegates.ImageChooserDelegate;
 import cl.estadiocdf.EstadioCDF.delegates.VideoDelegate;
 import cl.estadiocdf.EstadioCDF.dialogs.MessageDialog;
@@ -91,6 +98,8 @@ public class LiveFragment extends Fragment {
 
     private int loadedSources = 0;
 
+   // public Activity actividad;
+
     public void setVideoSelectedDelegate(VideoDelegate delegate) {
         this.videoDelegate = delegate;
     }
@@ -99,7 +108,7 @@ public class LiveFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         rootView = inflater.inflate(R.layout.fragment_live, container, false);
-
+        Log.e("Activity 1",""+getActivity());
         final ProgressDialog progress = new ProgressDialog(getActivity());
         progress.show();
         progress.setContentView(R.layout.progress_dialog);
@@ -107,10 +116,8 @@ public class LiveFragment extends Fragment {
         progress.setCanceledOnTouchOutside(false);
 
         ((GlobalECDF)getActivity().getApplication()).sendAnaliticsScreen("Pantalla Live");
-
         final Typeface extraBold = Typeface.createFromAsset(getActivity().getAssets(), "fonts/AkzidenzGrotesk-ExtraBoldCondItalic.otf");
-//        Typeface lightCondensedItalic = Typeface.createFromAsset(getActivity().getAssets(), "fonts/FuturaLT-Oblique.ttf");
-        Typeface lightCondensedItalic2 = Typeface.createFromAsset(getActivity().getAssets(), "fonts/FuturaLT-CondensedOblique.ttf");
+        final Typeface lightCondensedItalic2 = Typeface.createFromAsset(getActivity().getAssets(), "fonts/FuturaLT-CondensedOblique.ttf");
 
         nextShowContainer = (LinearLayout) rootView.findViewById(R.id.container_next_shows);
 
@@ -169,9 +176,11 @@ public class LiveFragment extends Fragment {
                                 for (int i = 1; i < liveStreamSchedules.size(); ++i) {
                                     createLiveMediaCell(liveStreamSchedules.get(i));
                                 }
-                                TimerClass timerClass = new TimerClass();
-                                timerClass.execute();
+                                //TimerClass timerClass = new TimerClass();
+                                //timerClass.execute();
                             }
+                            //TimerClass timerClass = new TimerClass();
+                            //timerClass.execute();
                         }
                     });
                 }
@@ -191,7 +200,7 @@ public class LiveFragment extends Fragment {
                 if (nextShow != null) {
 
                     SharedPreferences  prefs = getActivity().getSharedPreferences("recordatorio", Context.MODE_PRIVATE);
-                    if(prefs.getBoolean("evento_e",true) && prefs.getBoolean("evento_n",true)){
+                    if(prefs.getBoolean("evento_e",false) && prefs.getBoolean("evento_n",false)){
                         createReminder(nextShow,false,false);
                         createNotifications(nextShow,false,true);
                     }
@@ -223,6 +232,7 @@ public class LiveFragment extends Fragment {
     }
 
     private void displayLiveShow(final LiveStreamSchedule media, View liveShowContainer, int type) {
+
         Typeface lightCondensedItalic2 = Typeface.createFromAsset(getActivity().getAssets(), "fonts/FuturaLT-CondensedOblique.ttf");
 
         TextView timeLabel = (TextView)liveShowContainer.findViewById(R.id.time_label);
@@ -401,7 +411,7 @@ public class LiveFragment extends Fragment {
                 dialog.show(getFragmentManager(), "dialog");
             }
         });
-        //shareLiveContainer.setVisibility(View.VISIBLE);
+
         shareLiveContainer.bringToFront();
     }
 
@@ -529,31 +539,43 @@ public class LiveFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 ((GlobalECDF)getActivity().getApplication()).sendAnalitics("Facebook-Share");
-                if (splited.length > 1) {
-                    if (videoDelegate != null) {
-                        videoDelegate.displayImageChooser(
-                                String.format(LIVE_THUMBNAIL_LOCAL_IMAGE_URL, splited[0]),
-                                String.format(LIVE_THUMBNAIL_VISIT_IMAGE_URL, splited[1]),
-                                new ImageChooserDelegate() {
-                                    @Override
-                                    public void onImageSelected(String url) {
 
-                                        String text = String.format("Voy a ver  %s por Estadio CDF el día %s de %s del %s a las %s", media.getName(), dia.format(media.getStartDate()),
-                                                mes.format(media.getStartDate()), año.format(media.getStartDate()), hora.format(media.getStartDate()));
+                ServiceManager serviceManager = new ServiceManager(getActivity());
+                serviceManager.getNameFacebook(getActivity(), new ServiceManager.DataLoadedHandler<String>(){
+                    @Override
+                    public void loaded(final String data) {
+                        if (splited.length > 1) {
+                            if (videoDelegate != null) {
+                                videoDelegate.displayImageChooser(
+                                        String.format(LIVE_THUMBNAIL_LOCAL_IMAGE_URL, splited[0]),
+                                        String.format(LIVE_THUMBNAIL_VISIT_IMAGE_URL, splited[1]),
+                                        new ImageChooserDelegate() {
+                                            @Override
+                                            public void onImageSelected(String url) {
 
-                                        PostDialog postDialog = new PostDialog(text, media.getName(), url, PostDialog.FACEBOOK_SHARE);
-                                        postDialog.show(getActivity().getSupportFragmentManager(), "dialog");
-                                    }
-                                });
+                                                String text = String.format("Voy a ver  %s por Estadio CDF el día %s de %s del %s a las %s", media.getName(), dia.format(media.getStartDate()),
+                                                        mes.format(media.getStartDate()), año.format(media.getStartDate()), hora.format(media.getStartDate()));
+
+                                                PostDialog postDialog = new PostDialog(text, media.getName(), url, PostDialog.FACEBOOK_SHARE, data);
+                                                postDialog.show(getActivity().getSupportFragmentManager(), "dialog");
+                                            }
+                                        });
+                            }
+                        } else {
+
+                            String text = String.format("Voy a ver  %s por Estadio CDF el día %s de %s del %s a las %s", media.getName(),dia.format(media.getStartDate()),
+                                    mes.format(media.getStartDate()), año.format(media.getStartDate()), hora.format(media.getStartDate()));
+
+                            PostDialog postDialog = new PostDialog(text, media.getName(), String.format(LIVE_LEFT_HEADER_URL_FORMATSTR, splited[0]), PostDialog.FACEBOOK_SHARE, data);
+                            postDialog.show(getActivity().getSupportFragmentManager(), "dialog");
+                        }
                     }
-                } else {
 
-                    String text = String.format("Voy a ver  %s por Estadio CDF el día %s de %s del %s a las %s", media.getName(),dia.format(media.getStartDate()),
-                            mes.format(media.getStartDate()), año.format(media.getStartDate()), hora.format(media.getStartDate()));
+                    @Override
+                    public void error() {
+                    }
+                });
 
-                    PostDialog postDialog = new PostDialog(text, media.getName(), String.format(LIVE_LEFT_HEADER_URL_FORMATSTR, splited[0]), PostDialog.FACEBOOK_SHARE);
-                    postDialog.show(getActivity().getSupportFragmentManager(), "dialog");
-                }
             }
         });
 
@@ -561,22 +583,28 @@ public class LiveFragment extends Fragment {
         twitterButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 ((GlobalECDF)getActivity().getApplication()).sendAnalitics("Twitter-Share");
-                if (splited.length > 1) {
-                    String text = String.format("Voy a ver  %s por Estadio CDF el día %s de %s del %s a las %s", media.getName(),dia.format(media.getStartDate()),
-                            mes.format(media.getStartDate()), año.format(media.getStartDate()), hora.format(media.getStartDate()));
+                try{
+                    if (splited.length > 1) {
+                        String text = String.format("Voy a ver  %s por Estadio CDF el día %s de %s del %s a las %s", media.getName(),dia.format(media.getStartDate()),
+                                mes.format(media.getStartDate()), año.format(media.getStartDate()), hora.format(media.getStartDate()));
 
 
-                    PostDialog postDialog = new PostDialog(text, media.getName(), "", PostDialog.TWITTER_SHARE);
-                    postDialog.show(getActivity().getSupportFragmentManager(), "dialog");
-                } else {
+                        PostDialog postDialog = new PostDialog(text, media.getName(),"", PostDialog.TWITTER_SHARE);
+                        postDialog.show(getActivity().getSupportFragmentManager(), "dialog");
+                    } else {
 
-                    String text = String.format("Voy a ver  %s por Estadio CDF el día %s de %s del %s a las %s", media.getName(),dia.format(media.getStartDate()),
-                            mes.format(media.getStartDate()), año.format(media.getStartDate()), hora.format(media.getStartDate()));
+                        String text = String.format("Voy a ver  %s por Estadio CDF el día %s de %s del %s a las %s", media.getName(),dia.format(media.getStartDate()),
+                                mes.format(media.getStartDate()), año.format(media.getStartDate()), hora.format(media.getStartDate()));
 
-
-                    PostDialog postDialog = new PostDialog(text, media.getName(), "", PostDialog.TWITTER_SHARE);
-                    postDialog.show(getActivity().getSupportFragmentManager(), "dialog");
+                        PostDialog postDialog = new PostDialog(text, media.getName(),"", PostDialog.TWITTER_SHARE);
+                        postDialog.show(getActivity().getSupportFragmentManager(), "dialog");
+                    }
+                }
+                catch (Exception e) {
+                    e.printStackTrace();
+                    Log.e("Twitter", e.toString());
                 }
 
             }
@@ -687,6 +715,7 @@ public class LiveFragment extends Fragment {
                 ((GlobalECDF)getActivity().getApplication()).sendAnalitics("Click-Agendar");
                 Animation animation = AnimationUtils.loadAnimation(getActivity(), R.anim.button_bounce);
                 v.startAnimation(animation);
+
                 SharedPreferences  prefs = getActivity().getSharedPreferences("recordatorio", Context.MODE_PRIVATE);
                 if(prefs.getBoolean("evento_e",true) && prefs.getBoolean("evento_n",true)){
                     createReminder(media,false, false);
@@ -763,7 +792,7 @@ public class LiveFragment extends Fragment {
         long time = liveStreamSchedule.getStartDate().getTime() - 120000;
         //long time = new Date().getTime() + 10000;
         Intent myIntent = new Intent(getActivity(), ReceiverNotification.class);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(getActivity(),(int)(time / 1000) , myIntent, 0);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(getActivity(), (int) (time / 1000), myIntent, 0);
 
         //time = System.currentTimeMillis() + 10000;
         AlarmManager alarmManager = (AlarmManager)getActivity().getSystemService(getActivity().ALARM_SERVICE);
@@ -972,7 +1001,7 @@ public class LiveFragment extends Fragment {
         });
     }
 
-    public class TimerClass extends AsyncTask<Void, Void, Void>{
+    public class TimerClass extends AsyncTask<Void, Void, Void> {
 
         public final long MINUTO = 60000;
         private long inicio;
@@ -1045,5 +1074,35 @@ public class LiveFragment extends Fragment {
             refresh(contador);
             Log.e("post","post");
         }
+    }
+
+    public void updateStatus(String tweet) {
+        AQuery aq1 = new AQuery(getActivity());
+        Log.e("esteban","updateStatus");
+        TwitterHandle handle = new TwitterHandle(getActivity(), "hLOEaa7w7tL0vJjESgrOcNOrS", "r1QKZ2PKpjflPD4QMLLPhLPELGlXLLjEtGs22l2Zk2rcEWTJb7");
+        String url = "https://api.twitter.com/1.1/statuses/update.json";
+
+        Map<String,String> params = new HashMap<String, String>();
+        params.put("status", "dffffsd");
+        aq1.auth(handle).ajax(url, JSONObject.class, new AjaxCallback<JSONObject>() {
+            @Override
+            public void callback(String url, JSONObject object, AjaxStatus status) {
+                try {
+                    Log.d("Twitter", object.toString());
+
+                    if(status.getCode() == 200) {
+                        //handler.done(null);
+                    }
+                    else {
+                        //handler.done(new Exception(status.getMessage()));
+                    }
+                }
+                catch (Exception e) {
+                    e.printStackTrace();
+                    Log.e("Twitter", e.toString());
+                }
+
+            }
+        });
     }
 }

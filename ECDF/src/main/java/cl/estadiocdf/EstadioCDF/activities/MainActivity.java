@@ -231,7 +231,7 @@ public class MainActivity extends ActionBarActivity {
 
         blockOverlay.setVisibility(View.GONE);
 
-        slideMenuPosition = -390.0f;
+        slideMenuPosition = -392.0f;
         menuButtonPosition = 0.0f;
         helpButtonPosition = menuButtonPosition + menuButton.getWidth();
 

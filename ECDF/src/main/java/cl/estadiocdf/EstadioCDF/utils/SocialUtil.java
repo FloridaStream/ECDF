@@ -10,7 +10,6 @@ import com.androidquery.auth.TwitterHandle;
 import com.androidquery.callback.AjaxCallback;
 import com.androidquery.callback.AjaxStatus;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.HashMap;
@@ -41,17 +40,25 @@ public final class SocialUtil {
 
         FacebookHandle handle = new FacebookHandle(activity, "669627823083035", "publish_stream, email");             //  ECDF
         //FacebookHandle handle = new FacebookHandle(activity, "238809549653178", "publish_stream, email");                //  Win Sports
-
+        AQuery aq = new AQuery(activity);
         aq.auth(handle).ajax("https://graph.facebook.com/me/feed", fbparams, JSONObject.class, new AjaxCallback<JSONObject>(){
 
             @Override
             public void callback(String url, JSONObject object, AjaxStatus status) {
                 Log.e("Object",object.toString());
-                if(status.getCode() == 200) {
-                    handler.done(null);
+
+                try{
+                    if(status.getCode() == 200) {
+                        handler.done(null);
+                    }
+                    else {
+                        Log.e("Error","--> "+status.getMessage());
+                        handler.done(new Exception(status.getMessage()));
+                    }
                 }
-                else {
-                    Log.e("Error","--> "+status.getMessage());
+                catch(Exception e){
+                    e.printStackTrace();
+                    Log.e("Facebook", e.toString());
                     handler.done(new Exception(status.getMessage()));
                 }
             }
@@ -64,19 +71,18 @@ public final class SocialUtil {
         if(tweet.length() > 140) {
             tweet = tweet.substring(0,140);
         }
-        //AQuery aq = new AQuery(activity);
-        //TwitterHandle handle = new TwitterHandle(activity, "WYGXn3E4f4uIvQwHeOQPeonjj", "kTKoObcIMhjfF6fRNUFBl3EoqryD8ObdOAxkgOXfL2iklJzZMy");
-        TwitterHandle handle = new TwitterHandle((Activity)activity, "EyE4GnDdysWwz2IcD4CvLC2vL", "VaRGKiqmc10WIFJsXheG2EwTAZfJURzor4eADhwDkiey8wjYlg");
+
+        TwitterHandle handle = new TwitterHandle(activity, "WYGXn3E4f4uIvQwHeOQPeonjj",
+                "kTKoObcIMhjfF6fRNUFBl3EoqryD8ObdOAxkgOXfL2iklJzZMy");
+
         String url = "https://api.twitter.com/1.1/statuses/update.json";
-        Log.e("twitter", handle.toString());
 
         Map<String,String> params = new HashMap<String, String>();
         params.put("status", tweet);
-        Log.e("Che","Che Cuantas copas tenes?");
+
         aq.auth(handle).ajax(url, params, JSONObject.class, new AjaxCallback<JSONObject>() {
             @Override
             public void callback(String url, JSONObject object, AjaxStatus status) {
-                Log.e("Twitter Sttus",status.getMessage());
                 try {
                     Log.d("Twitter", object.toString());
 
@@ -90,6 +96,7 @@ public final class SocialUtil {
                 catch (Exception e) {
                     e.printStackTrace();
                     Log.e("Twitter", e.toString());
+                    handler.done(new Exception(status.getMessage()));
                 }
 
             }

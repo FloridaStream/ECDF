@@ -31,6 +31,7 @@ import cl.estadiocdf.EstadioCDF.datamodel.Media;
 import cl.estadiocdf.EstadioCDF.datamodel.Thumbnail;
 import cl.estadiocdf.EstadioCDF.delegates.FilteredArrayAdapterDelegate;
 import cl.estadiocdf.EstadioCDF.dialogs.PostDialog;
+import cl.estadiocdf.EstadioCDF.services.ServiceManager;
 import cl.estadiocdf.EstadioCDF.utils.GlobalECDF;
 
 /**
@@ -164,19 +165,26 @@ public class FilteredVodArrayAdapter extends StickyGridHeadersSimpleArrayAdapter
             @Override
             public void onClick(View v) {
                 ((GlobalECDF)getActivity().getApplication()).sendAnalitics("Facebook-Share");
-                if(item.belongsToCategoryByName("Partido")) {
-                    String text = String.format("Me repito el plato: Estoy viendo en VOD %s por Estadio CDF", item.getTitle());
 
-                    PostDialog postDialog = new PostDialog(text, item.getTitle(), thumbnailUrl, PostDialog.FACEBOOK_SHARE);
-                    postDialog.show(getActivity().getSupportFragmentManager(), "dialog");
-                }
-                else {
+                ServiceManager serviceManager = new ServiceManager(getActivity());
+                serviceManager.getNameFacebook(getActivity(), new ServiceManager.DataLoadedHandler<String>(){
+                    @Override
+                    public void loaded(final String data) {
+                        if(item.belongsToCategoryByName("Partido")) {
+                            String text = String.format("Me repito el plato: Estoy viendo en VOD %s por Estadio CDF", item.getTitle());
 
-                    String text = String.format("Estoy viendo EN VIVO %s por Estadio CDF", item.getTitle());
+                            PostDialog postDialog = new PostDialog(text, item.getTitle(), thumbnailUrl, PostDialog.FACEBOOK_SHARE,data);
+                            postDialog.show(getActivity().getSupportFragmentManager(), "dialog");
+                        }
+                        else {
 
-                    PostDialog postDialog = new PostDialog(text, item.getTitle(), thumbnailUrl, PostDialog.FACEBOOK_SHARE);
-                    postDialog.show(getActivity().getSupportFragmentManager(), "dialog");
-                }
+                            String text = String.format("Estoy viendo EN VIVO %s por Estadio CDF", item.getTitle());
+
+                            PostDialog postDialog = new PostDialog(text, item.getTitle(), thumbnailUrl, PostDialog.FACEBOOK_SHARE, data);
+                            postDialog.show(getActivity().getSupportFragmentManager(), "dialog");
+                        }
+                    }
+                });
             }
         });
 

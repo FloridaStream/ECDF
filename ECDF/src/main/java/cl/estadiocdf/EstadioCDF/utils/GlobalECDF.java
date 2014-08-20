@@ -43,6 +43,7 @@ public class GlobalECDF extends Application {
         Log.e("evento", evento);
         t.send(new HitBuilders.EventBuilder("evento", evento).build());
     }
+
     public void sendAnaliticsScreen(String titulo){
         Tracker t = getTracker(TrackerName.APP_TRACKER);
         t.setScreenName(titulo);
@@ -53,5 +54,6 @@ public class GlobalECDF extends Application {
     public void onLowMemory() {
         super.onLowMemory();
         BitmapAjaxCallback.clearCache();
+        DataClean.garbageCollector("");
     }
 }

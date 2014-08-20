@@ -339,19 +339,26 @@ public class VodFragment extends Fragment {
                 @Override
                 public void onClick(View v) {
                     ((GlobalECDF)getActivity().getApplication()).sendAnalitics("Facebook-Share");
-                    if(m.belongsToCategoryByName("Partido")) {
-                        String text = String.format("Todo lo que me gusta del fútbol: Estoy viendo en VOD %s por Estadio CDF", m.getTitle());
 
-                        PostDialog postDialog = new PostDialog(text, m.getTitle(), thumbnailUrl, PostDialog.FACEBOOK_SHARE);
-                        postDialog.show(getActivity().getSupportFragmentManager(), "dialog");
-                    }
-                    else {
+                    ServiceManager serviceManager = new ServiceManager(getActivity());
+                    serviceManager.getNameFacebook(getActivity(), new ServiceManager.DataLoadedHandler<String>(){
+                        @Override
+                        public void loaded(final String data) {
+                            if(m.belongsToCategoryByName("Partido")) {
+                                String text = String.format("Todo lo que me gusta del fútbol: Estoy viendo en VOD %s por Estadio CDF", m.getTitle());
 
-                        String text = String.format("Todo lo que me gusta del fútbol: Estoy viendo en VOD %s por Estadio CDF", m.getTitle());
+                                PostDialog postDialog = new PostDialog(text, m.getTitle(), thumbnailUrl, PostDialog.FACEBOOK_SHARE,data);
+                                postDialog.show(getActivity().getSupportFragmentManager(), "dialog");
+                            }
+                            else {
 
-                        PostDialog postDialog = new PostDialog(text, m.getTitle(), thumbnailUrl, PostDialog.FACEBOOK_SHARE);
-                        postDialog.show(getActivity().getSupportFragmentManager(), "dialog");
-                    }
+                                String text = String.format("Todo lo que me gusta del fútbol: Estoy viendo en VOD %s por Estadio CDF", m.getTitle());
+
+                                PostDialog postDialog = new PostDialog(text, m.getTitle(), thumbnailUrl, PostDialog.FACEBOOK_SHARE,data);
+                                postDialog.show(getActivity().getSupportFragmentManager(), "dialog");
+                            }
+                        }
+                    });
                 }
             });
 
@@ -587,19 +594,26 @@ public class VodFragment extends Fragment {
                 @Override
                 public void onClick(View v) {
                     ((GlobalECDF)getActivity().getApplication()).sendAnalitics("Facebook-Share");
-                    if(m.belongsToCategoryByName("Partido")) {
-                        String text = String.format("Me repito el plato: Estoy viendo en VOD %s por Estadio CDF", m.getTitle());
 
-                        PostDialog postDialog = new PostDialog(text, m.getTitle(), thumbnailUrl, PostDialog.FACEBOOK_SHARE);
-                        postDialog.show(getActivity().getSupportFragmentManager(), "dialog");
-                    }
-                    else {
+                    ServiceManager serviceManager = new ServiceManager(getActivity());
+                    serviceManager.getNameFacebook(getActivity(), new ServiceManager.DataLoadedHandler<String>(){
+                        @Override
+                        public void loaded(final String data) {
+                            if(m.belongsToCategoryByName("Partido")) {
+                                String text = String.format("Me repito el plato: Estoy viendo en VOD %s por Estadio CDF", m.getTitle());
 
-                        String text = String.format("Estoy viendo EN VIVO %s por Estadio CDF", m.getTitle());
+                                PostDialog postDialog = new PostDialog(text, m.getTitle(), thumbnailUrl, PostDialog.FACEBOOK_SHARE, data);
+                                postDialog.show(getActivity().getSupportFragmentManager(), "dialog");
+                            }
+                            else {
 
-                        PostDialog postDialog = new PostDialog(text, m.getTitle(), thumbnailUrl, PostDialog.FACEBOOK_SHARE);
-                        postDialog.show(getActivity().getSupportFragmentManager(), "dialog");
-                    }
+                                String text = String.format("Estoy viendo EN VIVO %s por Estadio CDF", m.getTitle());
+
+                                PostDialog postDialog = new PostDialog(text, m.getTitle(), thumbnailUrl, PostDialog.FACEBOOK_SHARE, data);
+                                postDialog.show(getActivity().getSupportFragmentManager(), "dialog");
+                            }
+                        }
+                    });
                 }
             });
 
@@ -723,8 +737,7 @@ public class VodFragment extends Fragment {
 
 
     private void displayLastMatches() {
-//        Typeface extraBold = Typeface.createFromAsset(getActivity().getAssets(), "fonts/AkzidenzGrotesk-ExtraBoldCondItalic.otf");
-//        Typeface lightCondensedItalic = Typeface.createFromAsset(getActivity().getAssets(), "fonts/FuturaLT-Oblique.ttf");
+
         Typeface lightCondensedItalic2 = Typeface.createFromAsset(getActivity().getAssets(), "fonts/FuturaLT-CondensedOblique.ttf");
 
         for (int i = 0; i < lastMatchesList.size(); ++i) {

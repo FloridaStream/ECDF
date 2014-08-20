@@ -60,7 +60,6 @@ public class ServiceManager {
     public ServiceManager(Context context) {
         this.context = context;
         aq = new AQuery(context);
-        //handler = new FacebookHandle((Activity) context, PERMISSIONS, APP_ID);
     }
 
     public void saveUserData(User user) {
@@ -88,6 +87,7 @@ public class ServiceManager {
                     }
                     catch(Exception e ){
                         e.printStackTrace();
+                        handler.error("");
                     }
                 }
                 else {
@@ -324,7 +324,7 @@ public class ServiceManager {
                     handler.loaded(tokenIssue);
                 }
                 catch (Exception exception) {
-
+                    handler.error(exception.getMessage());
                 }
             }
         });
@@ -343,7 +343,7 @@ public class ServiceManager {
                     handler.loaded(tokenIssue);
                 }
                 catch (Exception exception) {
-
+                    handler.error(exception.getMessage());
                 }
             }
         });

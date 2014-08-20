@@ -29,11 +29,11 @@ import com.androidquery.util.AQUtility;
 
 public class TwitterHandle extends AccountHandle{
 
-    private static final String OAUTH_REQUEST_TOKEN = "https://api.twitter.com/oauth/request_token";
-    private static final String OAUTH_ACCESS_TOKEN = "https://api.twitter.com/oauth/access_token";
-    private static final String OAUTH_AUTHORIZE = "https://api.twitter.com/oauth/authorize";
-    private static final String CALLBACK_URI = "https://winsportsonline.com";
-    private static final String CANCEL_URI = "twitter://cancel";
+	private static final String OAUTH_REQUEST_TOKEN = "https://api.twitter.com/oauth/request_token";
+	private static final String OAUTH_ACCESS_TOKEN = "https://api.twitter.com/oauth/access_token";
+	private static final String OAUTH_AUTHORIZE = "https://api.twitter.com/oauth/authorize";
+	private static final String CALLBACK_URI = "https://winsportsonline.com";
+	private static final String CANCEL_URI = "twitter://cancel";
 	
 	private Activity act;
 	private WebDialog dialog;
@@ -47,7 +47,6 @@ public class TwitterHandle extends AccountHandle{
 		this.act = act;
 		
 		consumer = new CommonsHttpOAuthConsumer(consumerKey, consumerSecret);
-        //consumer = new CommonsHttpOAuthConsumer("WYGXn3E4f4uIvQwHeOQPeonjj", "kTKoObcIMhjfF6fRNUFBl3EoqryD8ObdOAxkgOXfL2iklJzZMy");
 		
 		token = fetchToken(TW_TOKEN);
 		secret = fetchToken(TW_SECRET);
