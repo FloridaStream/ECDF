@@ -76,8 +76,15 @@ public class VodFragment extends Fragment {
     private void message(){
         MessageDialogConfirm dialog = new MessageDialogConfirm(MessageDialog.LENGTH_LONG);
         dialog.setTitle("ERROR");
-        dialog.setMessage("Tiempo de espera excedido, Revisa tu conexión a internet");
+        dialog.setMessage("Tiempo de espera excedido, revisa tu conexión a internet");
         dialog.show(getFragmentManager(), "dialog");
+    }
+
+    @Override
+    public void onResume() {
+        CheckTimer checkTimer = new CheckTimer();
+        checkTimer.execute();
+        super.onResume();
     }
 
     @Override
@@ -88,8 +95,6 @@ public class VodFragment extends Fragment {
         ((GlobalECDF)getActivity().getApplication()).sendAnaliticsScreen("Vista VOD");
 
         View rootView = inflater.inflate(R.layout.fragment_vod, container, false);
-        CheckTimer checkTimer = new CheckTimer();
-        checkTimer.execute();
 
         TextView highlightTitleLabel = (TextView)rootView.findViewById(R.id.highligth_title_label);
         highlightTitleLabel.setTypeface(lightCondensedItalic2);
@@ -129,14 +134,20 @@ public class VodFragment extends Fragment {
                 progress.setCancelable(false);
                 progress.setCanceledOnTouchOutside(false);
 
+                final CheckTimer checkTimer = new CheckTimer();
+                checkTimer.execute();
+
                 ServiceManager serviceManager = new ServiceManager(getActivity());
                 serviceManager.loadVODMedia( new String[] { VOD_CATEGORY_HIGHLIGHT }, new ServiceManager.DataLoadedHandler<Media>() {
                     @Override
                     public void loaded(List<Media> data) {
                         highliightsList = data;
-
+                        higlightsLoaded = true;
+                        checkTimer.cancel(true);
                         displayHighlights();
                         progress.dismiss();
+
+
 
                     }
                 });
@@ -151,11 +162,17 @@ public class VodFragment extends Fragment {
                 progress.setCancelable(false);
                 progress.setCanceledOnTouchOutside(false);
 
+                final CheckTimer checkTimer = new CheckTimer();
+                checkTimer.execute();
+
                 ServiceManager serviceManager = new ServiceManager(getActivity());
                 serviceManager.loadVODMedia( new String[] { VOD_CATEGORY_LAST_MATCHES }, new ServiceManager.DataLoadedHandler<Media>() {
                     @Override
                     public void loaded(List<Media> data) {
                         lastMatchesList = data;
+
+                        matchesLoaded = true;
+                        checkTimer.cancel(true);
                         displayLastPrograms();
 
                         progress.dismiss();
@@ -173,11 +190,16 @@ public class VodFragment extends Fragment {
                 progress.setCancelable(false);
                 progress.setCanceledOnTouchOutside(false);
 
+                final CheckTimer checkTimer = new CheckTimer();
+                checkTimer.execute();
+
                 ServiceManager serviceManager = new ServiceManager(getActivity());
                 serviceManager.loadVODMedia( new String[] { VOD_CATEGORY_LAST_PROGRAM }, new ServiceManager.DataLoadedHandler<Media>() {
                     @Override
                     public void loaded(List<Media> data) {
                         lastShowsList = data;
+                        showsLoaded = true;
+                        checkTimer.cancel(true);
 
                         displayLastMatches();
                         progress.dismiss();
@@ -1013,6 +1035,9 @@ public class VodFragment extends Fragment {
         @Override
         protected void onPreExecute() {
             inicio = System.currentTimeMillis();
+            higlightsLoaded = false;
+            matchesLoaded = false;
+            showsLoaded = false;
         }
 
         @Override

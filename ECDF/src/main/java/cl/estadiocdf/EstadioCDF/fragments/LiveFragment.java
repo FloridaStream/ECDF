@@ -54,6 +54,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.TimeZone;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.UUID;
 
 import cl.estadiocdf.EstadioCDF.R;
@@ -64,6 +66,7 @@ import cl.estadiocdf.EstadioCDF.delegates.DelegateTwitter;
 import cl.estadiocdf.EstadioCDF.delegates.ImageChooserDelegate;
 import cl.estadiocdf.EstadioCDF.delegates.VideoDelegate;
 import cl.estadiocdf.EstadioCDF.dialogs.MessageDialog;
+import cl.estadiocdf.EstadioCDF.dialogs.MessageDialogConfirm;
 import cl.estadiocdf.EstadioCDF.dialogs.PostDialog;
 import cl.estadiocdf.EstadioCDF.dialogs.ShareDialog;
 import cl.estadiocdf.EstadioCDF.notification.ReceiverNotification;
@@ -87,7 +90,7 @@ public class LiveFragment extends Fragment {
     private LinearLayout nextShowContainer;
 
     private List<LiveStreamSchedule> liveStreamSchedules = new ArrayList<LiveStreamSchedule>();
-    LiveStreamSchedule nextShow;
+    private LiveStreamSchedule nextShow;
 
     private View rootView;
 
@@ -97,6 +100,11 @@ public class LiveFragment extends Fragment {
     private static VideoDelegate videoDelegate;
 
     private int loadedSources = 0;
+    private boolean showMessageLimit;
+    private boolean complete = false;
+
+    private ProgressDialog progress;
+    private ImageView refresh;
 
    // public Activity actividad;
 
@@ -108,14 +116,15 @@ public class LiveFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         rootView = inflater.inflate(R.layout.fragment_live, container, false);
-        Log.e("Activity 1",""+getActivity());
-        final ProgressDialog progress = new ProgressDialog(getActivity());
+
+        progress = new ProgressDialog(getActivity());
         progress.show();
         progress.setContentView(R.layout.progress_dialog);
         progress.setCancelable(false);
         progress.setCanceledOnTouchOutside(false);
 
         ((GlobalECDF)getActivity().getApplication()).sendAnaliticsScreen("Pantalla Live");
+
         final Typeface extraBold = Typeface.createFromAsset(getActivity().getAssets(), "fonts/AkzidenzGrotesk-ExtraBoldCondItalic.otf");
         final Typeface lightCondensedItalic2 = Typeface.createFromAsset(getActivity().getAssets(), "fonts/FuturaLT-CondensedOblique.ttf");
 
@@ -137,7 +146,7 @@ public class LiveFragment extends Fragment {
                         public void loaded(List<LiveStreamSchedule> data) {
 
                             liveStreamSchedules.addAll(data);
-
+                            complete = true;
                             Collections.sort(liveStreamSchedules, new Comparator<LiveStreamSchedule>() {
                                 @Override
                                 public int compare(LiveStreamSchedule lhs, LiveStreamSchedule rhs) {
@@ -179,8 +188,9 @@ public class LiveFragment extends Fragment {
                                 //TimerClass timerClass = new TimerClass();
                                 //timerClass.execute();
                             }
-                            //TimerClass timerClass = new TimerClass();
-                            //timerClass.execute();
+                            TimerEx timerEx = new TimerEx();
+                            timerEx.preInit();
+
                         }
                     });
                 }
@@ -211,20 +221,22 @@ public class LiveFragment extends Fragment {
                     else if(prefs.getBoolean("evento_e",false)){
                         createReminder(nextShow,true,true);
                     }
-                    else if(!prefs.getBoolean("evento_e",true) && !prefs.getBoolean("evento_n",true)){
+                    else if(!prefs.getBoolean("evento_e",false) && !prefs.getBoolean("evento_n",false)){
                         noSelectionMessage();
                     }
                 }
             }
         });
 
-        ImageView refresh = (ImageView) rootView.findViewById(R.id.refresh);
+        refresh = (ImageView) rootView.findViewById(R.id.refresh);
         refresh.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 refresh(0);
             }
         });
+        refresh.setEnabled(true);
+        refresh.setClickable(true);
         TextView nextShowsHeader = (TextView) rootView.findViewById(R.id.nextshows_label);
         nextShowsHeader.setTypeface(lightCondensedItalic2);
 
@@ -717,19 +729,18 @@ public class LiveFragment extends Fragment {
                 v.startAnimation(animation);
 
                 SharedPreferences  prefs = getActivity().getSharedPreferences("recordatorio", Context.MODE_PRIVATE);
-                if(prefs.getBoolean("evento_e",true) && prefs.getBoolean("evento_n",true)){
-                    createReminder(media,false, false);
-                    createNotifications(media,false,true);
+                if(prefs.getBoolean("evento_e",false) && prefs.getBoolean("evento_n",false)){
+                    createReminder(nextShow,false,false);
+                    createNotifications(nextShow,false,true);
                 }
                 else if(prefs.getBoolean("evento_n",false)){
-                    createNotifications(media,true, false);
-                    Log.e("Notificación creada","Si");
+                    createNotifications(nextShow,true, false);
+                    //Log.e("Notificación creada","Si");
                 }
                 else if(prefs.getBoolean("evento_e",false)){
-                    createReminder(media,true, true);
-                    Log.e("Recordatorio creado","Si");
+                    createReminder(nextShow,true,true);
                 }
-                else if(!prefs.getBoolean("evento_e",true) && !prefs.getBoolean("evento_n",true)){
+                else if(!prefs.getBoolean("evento_e",false) && !prefs.getBoolean("evento_n",false)){
                     noSelectionMessage();
                 }
 
@@ -922,16 +933,8 @@ public class LiveFragment extends Fragment {
         progress.setCancelable(false);
         progress.setCanceledOnTouchOutside(false);
 
-        /*if(count == 1){
-            Toast.makeText(getActivity()," Primer Refresh Bitch",Toast.LENGTH_LONG).show();
-        }
-        else if(count == -1){
-            Toast.makeText(getActivity()," Unico Refresh Bitch",Toast.LENGTH_LONG).show();
-        }
-        else{
-            Toast.makeText(getActivity()," Segundo Refresh Bitch",Toast.LENGTH_LONG).show();
-        }*/
-
+        CheckTimer checkTimer = new CheckTimer();
+        checkTimer.execute();
 
         final Typeface extraBold = Typeface.createFromAsset(getActivity().getAssets(), "fonts/AkzidenzGrotesk-ExtraBoldCondItalic.otf");
 
@@ -997,6 +1000,8 @@ public class LiveFragment extends Fragment {
                     });
                 }
                 progress.dismiss();
+                TimerEx timerEx = new TimerEx();
+                timerEx.preInit();
             }
         });
     }
@@ -1018,10 +1023,8 @@ public class LiveFragment extends Fragment {
         protected void onPreExecute() {
             inicio = System.currentTimeMillis();
             finFirst = (nextShow.getEndDate().getTime());
-            //finFirst = inicio + MINUTO;
             if(liveStreamSchedules.size() > 1){
                 finSeconds =  liveStreamSchedules.get(1).getStartDate().getTime();
-                //finSeconds =  inicio + (MINUTO );
 
                 if((finSeconds - finFirst) > MINUTO){
                     sameSchedule = false;
@@ -1076,33 +1079,132 @@ public class LiveFragment extends Fragment {
         }
     }
 
-    public void updateStatus(String tweet) {
-        AQuery aq1 = new AQuery(getActivity());
-        Log.e("esteban","updateStatus");
-        TwitterHandle handle = new TwitterHandle(getActivity(), "hLOEaa7w7tL0vJjESgrOcNOrS", "r1QKZ2PKpjflPD4QMLLPhLPELGlXLLjEtGs22l2Zk2rcEWTJb7");
-        String url = "https://api.twitter.com/1.1/statuses/update.json";
+    class TimerEx {
 
-        Map<String,String> params = new HashMap<String, String>();
-        params.put("status", "dffffsd");
-        aq1.auth(handle).ajax(url, JSONObject.class, new AjaxCallback<JSONObject>() {
-            @Override
-            public void callback(String url, JSONObject object, AjaxStatus status) {
-                try {
-                    Log.d("Twitter", object.toString());
+        private Timer timer;
+        private boolean stop = false;
+        public final long MINUTO = 60000;
+        private long inicio;
+        private long finFirst ;
+        private long finSeconds = -1;
+        private long delta;
+        private boolean isRefresh = false;
+        private boolean sameSchedule = true;
 
-                    if(status.getCode() == 200) {
-                        //handler.done(null);
-                    }
-                    else {
-                        //handler.done(new Exception(status.getMessage()));
-                    }
+        private int contador = 1;
+
+        public void preInit(){
+
+            inicio = System.currentTimeMillis();
+            finFirst = (nextShow.getEndDate().getTime());
+            if(liveStreamSchedules.size() > 1){
+                finSeconds =  liveStreamSchedules.get(1).getStartDate().getTime();
+
+                if((finSeconds - finFirst) > MINUTO){
+                    sameSchedule = false;
                 }
-                catch (Exception e) {
-                    e.printStackTrace();
-                    Log.e("Twitter", e.toString());
-                }
-
             }
-        });
+
+            if(finSeconds != -1){
+                if(sameSchedule){
+                    Log.e("Horario iguales","finPrograma 1 == inicioPrograma2");
+                    contador = -1;
+                    delta = finFirst - inicio;
+                }
+                else{
+                    Log.e("Horario Distintos","finPrograma 1 != inicioPrograma2");
+                    delta = finFirst - inicio;
+                }
+            }
+            else{
+                delta = finFirst - inicio;
+            }
+
+            Log.e("Delta","-->"+delta);
+            //delta = 15000;
+            Log.e("Delta","-->"+delta);
+            init();
+        }
+
+        public void init () {
+
+            timer = new Timer();
+            TimerTask task = new TimerTask() {
+
+                @Override
+                public void run()
+                {
+                    if(!stop){
+                        getActivity().runOnUiThread(new Runnable() {
+                            public void run() {
+                                if(!stop){
+                                    stop = true;
+                                    refresh(0);
+                                    timer.cancel();
+                                    timer.purge();
+                                }
+                            }
+                        });
+                    }
+                }
+            };
+            timer.schedule(task, delta, 30000);
+        }
+    }
+
+    @Override
+    public void onResume() {
+        CheckTimer checkTimer = new CheckTimer();
+        checkTimer.execute();
+        super.onResume();
+    }
+
+    private void message(){
+        MessageDialogConfirm dialog = new MessageDialogConfirm(MessageDialog.LENGTH_LONG);
+        dialog.setTitle("ERROR");
+        dialog.setMessage("Tiempo de espera excedido, revisa tu conexión a internet");
+        dialog.show(getFragmentManager(), "dialog");
+    }
+
+    private class CheckTimer extends AsyncTask<Void, Void, Void>{
+
+        private final long LIMIT = 5000;
+        private long inicio;
+        private long delta;
+        private long fin;
+
+        @Override
+        protected void onPreExecute() {
+            complete = false;
+            inicio = System.currentTimeMillis();
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            do{
+                fin = System.currentTimeMillis();
+                delta = fin - inicio;
+            }
+            while(delta < LIMIT);
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+
+            if(complete== false){
+
+                progress.dismiss();
+                refresh.setEnabled(false);
+                refresh.setClickable(false);
+                message();
+            }
+        }
+
+        @Override
+        protected void onCancelled() {
+            showMessageLimit = false;
+        }
     }
 }

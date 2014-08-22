@@ -72,25 +72,22 @@ public class VideoActivity extends Activity implements
 
         playerViewNative = (VideoView)findViewById(R.id.nativeVideoPlayer);
 
+
         videoDelegate = new VideoDelegate() {
             @Override
             public void onVideoSelected(Media media) {
                 displayMedia(media);
-                //Meta meta = media.getMP4((ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE));
-                //displayNative(meta, media);
-
             }
 
             @Override
             public void onVideoSelected(LiveStreamSchedule media) {
                 displayMedia(media);
-                //displayNative(media);
             }
         };
 
         Intent intent = getIntent();
         mediaSerializable = (MediaSerializable)intent.getSerializableExtra("media");
-       // Log.e("kitkat",""+(Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT));
+
         if(mediaSerializable.getMedia() != null){
             if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
                 showProgress();
@@ -107,15 +104,6 @@ public class VideoActivity extends Activity implements
                 videoDelegate.onVideoSelected(mediaSerializable.getLiveStreamSchedule());
             }
         }
-
-        /*if(mediaSerializable.getMedia() != null){
-            showProgress();
-            Meta meta = mediaSerializable.getMedia().getMP4((ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE));
-            displayNative(meta,mediaSerializable.getMedia());
-        }else{
-            showProgress();
-            displayNative(mediaSerializable.getLiveStreamSchedule());
-        }*/
     }
 
     private void showProgress() {
@@ -154,7 +142,7 @@ public class VideoActivity extends Activity implements
         });
     }
       
-    private void player(String url,boolean seekBar){
+    private void player(String url, boolean seekBar){
         isBack = true;
         playerViewNative.setVideoPath(url);
         if(!seekBar){
@@ -183,8 +171,45 @@ public class VideoActivity extends Activity implements
                     playerViewJW.setFullscreen(true);
                     playerViewJW.release();
                     isBack = true;
+
+                    playerViewJW.setOnErrorListener(new JWPlayer.OnErrorListener() {
+                        @Override
+                        public void onError(String message) {
+                            if(restoreAttempts < MAX_RESTORE_ATTEMPTS) {
+
+                                Log.e("Numeros de intentos","--> "+restoreAttempts);
+                                Log.e("MAXIMO de intentos","--> "+MAX_RESTORE_ATTEMPTS);
+                                if(mediaSerializable.getMedia() != null){
+                                    if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+
+                                        showProgress();
+                                        Meta meta = mediaSerializable.getMedia().getMP4((ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE));
+                                        displayNative(meta,mediaSerializable.getMedia());
+                                    }else{
+                                        videoDelegate.onVideoSelected(mediaSerializable.getMedia());
+                                    }
+                                }else{
+                                    if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                                        showProgress();
+                                        displayNative(mediaSerializable.getLiveStreamSchedule());
+                                    }else{
+                                        videoDelegate.onVideoSelected(mediaSerializable.getLiveStreamSchedule());
+                                    }
+                                }
+                                restoreAttempts++;
+                            }else {
+                                Log.e("STREAM", "Max restore attempts for streaming reached!!! May God have mercy of our souls!!!!");
+                                MessageDialog dialog = new MessageDialog(MessageDialog.LENGTH_LONG);
+                                dialog.setTitle("ERROR");
+                                dialog.setMessage("301 No se puede reproducir este video");
+                                //dialog.show(getFragmentManager(),"");
+                            }
+                        }
+                    });
                     playerViewJW.load(url);
                     playerViewJW.play();
+
+
                 }
             }
         });
@@ -213,7 +238,6 @@ public class VideoActivity extends Activity implements
                             onBackPressed();
                         }
                     };
-                    //Log.e("minutes", "" + (time / (60 * 1000)));
                     handler.postDelayed(runnable, time);
                 }
             }
@@ -267,6 +291,9 @@ public class VideoActivity extends Activity implements
     @Override
     public void onError(String message) {
         if(this.restoreAttempts < MAX_RESTORE_ATTEMPTS) {
+
+            Log.e("Numeros de intentos","--> "+this.restoreAttempts);
+            Log.e("MAXIMO de intentos","--> "+MAX_RESTORE_ATTEMPTS);
             if(mediaSerializable.getMedia() != null){
                 if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
 
@@ -286,7 +313,7 @@ public class VideoActivity extends Activity implements
             }
             this.restoreAttempts++;
         }else {
-            Log.d("STREAM", "Max restore attempts for streaming reached!!! May God have mercy of our souls!!!!");
+            Log.e("STREAM", "Max restore attempts for streaming reached!!! May God have mercy of our souls!!!!");
             MessageDialog dialog = new MessageDialog(MessageDialog.LENGTH_LONG);
             dialog.setTitle("ERROR");
             dialog.setMessage("301 No se puede reproducir este video");

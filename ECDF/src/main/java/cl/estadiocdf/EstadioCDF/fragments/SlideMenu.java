@@ -173,6 +173,7 @@ public class SlideMenu extends Fragment {
 
             AQuery aq = new AQuery(rootView);
             aq.id(R.id.profile_picture).image(user.getImageUrl());
+            Log.e("Nombre URL",user.getImageUrl());
         }
 
         serviceManager.loadFilters(new ServiceManager.DataLoadedHandler<Filter>() {

@@ -3,6 +3,7 @@ package cl.estadiocdf.EstadioCDF.fragments;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Typeface;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.Html;
@@ -21,6 +22,8 @@ import cl.estadiocdf.EstadioCDF.adapters.FilteredVodArrayAdapter;
 import cl.estadiocdf.EstadioCDF.datamodel.Filter;
 import cl.estadiocdf.EstadioCDF.datamodel.Media;
 import cl.estadiocdf.EstadioCDF.delegates.FilteredArrayAdapterDelegate;
+import cl.estadiocdf.EstadioCDF.dialogs.MessageDialog;
+import cl.estadiocdf.EstadioCDF.dialogs.MessageDialogConfirm;
 import cl.estadiocdf.EstadioCDF.serializables.MediaSerializable;
 import cl.estadiocdf.EstadioCDF.services.ServiceManager;
 import cl.estadiocdf.EstadioCDF.utils.GlobalECDF;
@@ -34,6 +37,8 @@ public class FilteredFragment extends Fragment {
 
     private GridView gridView;
     private TextView titleTextView;
+    private ProgressDialog progress;
+    private boolean complete = false;
 
     public FilteredFragment() { }
 
@@ -41,10 +46,9 @@ public class FilteredFragment extends Fragment {
         this.filter = filter;
     }
 
-    public void setFilter(Filter filter) {
-        this.filter = filter;
-        loadData();
-    }
+
+
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -72,7 +76,12 @@ public class FilteredFragment extends Fragment {
 
         return rootView;
     }
-
+    private void message(){
+        MessageDialogConfirm dialog = new MessageDialogConfirm(MessageDialog.LENGTH_LONG);
+        dialog.setTitle("ERROR");
+        dialog.setMessage("Tiempo de espera excedido, Revisa tu conexión a internet");
+        dialog.show(getFragmentManager(), "dialog");
+    }
     private void loadData() {
 
         if (gridView == null) {
@@ -95,7 +104,7 @@ public class FilteredFragment extends Fragment {
 
         titleTextView.setText(Html.fromHtml(titleText));
 
-        final ProgressDialog progress = new ProgressDialog(getActivity());
+        progress = new ProgressDialog(getActivity());
         progress.show();
         progress.setContentView(R.layout.progress_dialog);
         progress.setCancelable(false);
@@ -106,6 +115,7 @@ public class FilteredFragment extends Fragment {
             @Override
             public void loaded(List<Media> media) {
 
+                complete = true;
                 FilteredVodArrayAdapter adapter = new FilteredVodArrayAdapter(getActivity(), getActivity()
                         .getApplicationContext(), media);
 
@@ -132,4 +142,5 @@ public class FilteredFragment extends Fragment {
             }
         });
     }
+
 }

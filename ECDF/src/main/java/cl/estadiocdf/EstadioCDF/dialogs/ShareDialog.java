@@ -28,6 +28,7 @@ import cl.estadiocdf.EstadioCDF.datamodel.LiveStreamSchedule;
 import cl.estadiocdf.EstadioCDF.delegates.ImageChooserDelegate;
 import cl.estadiocdf.EstadioCDF.delegates.VideoDelegate;
 import cl.estadiocdf.EstadioCDF.fragments.LiveFragment;
+import cl.estadiocdf.EstadioCDF.services.ServiceManager;
 import cl.estadiocdf.EstadioCDF.utils.GlobalECDF;
 
 /**
@@ -65,35 +66,42 @@ public class ShareDialog extends DialogFragment{
             public void onClick(View view) {
                 getDialog().cancel();
                 ((GlobalECDF)getActivity().getApplication()).sendAnaliticsScreen("Facebook-Share");
-                if (videoDelegate != null) {
-                    if (splited.length == 2) {
-                        videoDelegate.displayImageChooser(
-                                String.format(LiveFragment.LIVE_THUMBNAIL_LOCAL_IMAGE_URL, splited[0]),
-                                String.format(LiveFragment.LIVE_THUMBNAIL_VISIT_IMAGE_URL, splited[1]),
-                                new ImageChooserDelegate() {
-                                    @Override
-                                    public void onImageSelected(String url) {
-                                        String text = String.format("No me falta fútbol: Estoy viendo EN VIVO %s por Estadio CDF", media.getName());
 
-                                        PostDialog postDialog = new PostDialog(text, media.getName(), url, PostDialog.FACEBOOK_SHARE);
-                                        postDialog.show(activity.getSupportFragmentManager(), "dialog");
-                                    }
-                                });
-                    }else{
-                        videoDelegate.displayImageChooser(
-                                String.format(LiveFragment.LIVE_LEFT_HEADER_URL_FORMATSTR, splited[0]),
-                                String.format(LiveFragment.LIVE_RIGHT_HEADER_URL_FORMATSTR, splited[0]),
-                                new ImageChooserDelegate() {
-                                    @Override
-                                    public void onImageSelected(String url) {
-                                        String text = String.format("Estoy viendo EN VIVO %s por Estadio CDF", media.getName());
+                ServiceManager serviceManager = new ServiceManager(getActivity());
+                serviceManager.getNameFacebook(getActivity(), new ServiceManager.DataLoadedHandler<String>(){
+                    @Override
+                    public void loaded(final String data) {
+                        if (videoDelegate != null) {
+                            if (splited.length == 2) {
+                                videoDelegate.displayImageChooser(
+                                        String.format(LiveFragment.LIVE_THUMBNAIL_LOCAL_IMAGE_URL, splited[0]),
+                                        String.format(LiveFragment.LIVE_THUMBNAIL_VISIT_IMAGE_URL, splited[1]),
+                                        new ImageChooserDelegate() {
+                                            @Override
+                                            public void onImageSelected(String url) {
+                                                String text = String.format("No me falta fútbol: Estoy viendo EN VIVO %s por Estadio CDF", media.getName());
 
-                                        PostDialog postDialog = new PostDialog(text, media.getName(), url, PostDialog.FACEBOOK_SHARE);
-                                        postDialog.show(activity.getSupportFragmentManager(), "dialog");
-                                    }
-                                });
+                                                PostDialog postDialog = new PostDialog(text, media.getName(), url, PostDialog.FACEBOOK_SHARE, data);
+                                                postDialog.show(activity.getSupportFragmentManager(), "dialog");
+                                            }
+                                        });
+                            }else{
+                                videoDelegate.displayImageChooser(
+                                        String.format(LiveFragment.LIVE_LEFT_HEADER_URL_FORMATSTR, splited[0]),
+                                        String.format(LiveFragment.LIVE_RIGHT_HEADER_URL_FORMATSTR, splited[0]),
+                                        new ImageChooserDelegate() {
+                                            @Override
+                                            public void onImageSelected(String url) {
+                                                String text = String.format("Estoy viendo EN VIVO %s por Estadio CDF", media.getName());
+
+                                                PostDialog postDialog = new PostDialog(text, media.getName(), url, PostDialog.FACEBOOK_SHARE, data );
+                                                postDialog.show(activity.getSupportFragmentManager(), "dialog");
+                                            }
+                                        });
+                            }
+                        }
                     }
-                }
+                });
             }
         });
 
